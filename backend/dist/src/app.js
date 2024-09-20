@@ -13,4 +13,8 @@ app.get("/", (req, res) => {
     res.send("Express + TypeScript Server");
 });
 app.use("/api", userRoutes_1.default);
+//i testsyfte
+app.get("/test", (req, res) => {
+    res.json({ message: "Test route works!" });
+});
 exports.default = app;

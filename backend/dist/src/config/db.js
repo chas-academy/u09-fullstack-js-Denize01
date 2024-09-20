@@ -19,7 +19,6 @@ const connectDB = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield mongoose_1.default.connect(process.env.MONGO_URI || "mongodb://localhost:27017/U09TRACKSTER");
         console.log("MongoDB connected successfully");
-        console.log("Connecting to MongoDB URI", process.env.MONGO_URI);
     }
     catch (error) {
         console.error("MongoDB connection error:", error);

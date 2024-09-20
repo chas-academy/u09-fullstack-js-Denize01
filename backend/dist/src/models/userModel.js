@@ -1,5 +1,4 @@
 "use strict";
-// import mongoose, { Schema, Document } from "mongoose";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -24,34 +23,19 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// interface IUser extends Document {
-//   name: string;
-//   email: string;
-//   password: string;
-//   createdAt: Date;
-//   updatedAt: Date;
-//   isActive: boolean;
-//   roles?: "user" | "admin" | "superadmin";
-// }
-// //döp till isAdmin istället?
-// const UserSchema: Schema = new Schema({
-//   name: { type: String, required: true },
-//   email: { type: String, required: true, unique: true },
-//   password: { type: String, required: true },
-//   createdAt: { type: Date, default: Date.now },
-//   updatedAt: { type: Date, default: Date.now },
-//   isActive: { type: Boolean, default: true },
-//   roles: {
-//     type: String,
-//     enum: ["user", "admin", "superadmin"],
-//     default: "user",
-//   },
-// });
-// export default mongoose.model<IUser>("User", UserSchema);
 const mongoose_1 = __importStar(require("mongoose"));
+//döp till isAdmin istället?
 const UserSchema = new mongoose_1.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
+    createdAt: { type: Date, default: Date.now },
+    updatedAt: { type: Date, default: Date.now },
+    isActive: { type: Boolean, default: true },
+    roles: {
+        type: String,
+        enum: ["user", "admin", "superadmin"],
+        default: "user",
+    },
 });
 exports.default = mongoose_1.default.model("User", UserSchema);
