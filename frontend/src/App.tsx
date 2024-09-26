@@ -1,9 +1,14 @@
 import "./App.css";
+import CalendarPage from "./pages/CalendarPage";
+import React from "react";
 
 function App() {
   return (
     <>
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
+      <div>
+        <h1>Välkommen till Min Kalender App</h1>
+        <CalendarPage />
+      </div>
     </>
   );
 }
