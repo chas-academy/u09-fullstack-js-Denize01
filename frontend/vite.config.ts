@@ -22,9 +22,9 @@ export default defineConfig({
       },
       manifest: {
         // Här lägger du till din PWA-manifestkonfiguration
-        name: "My React App",
-        short_name: "ReactApp",
-        description: "My awesome React app using Vite and PWA",
+        name: "My Calendar App",
+        short_name: "CalendarApp",
+        description: "My awesome Calendar app using Vite and PWA",
         theme_color: "#ffffff",
         icons: [
           {
