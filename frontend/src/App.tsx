@@ -1,6 +1,5 @@
 import "./App.css";
 import CalendarPage from "./pages/CalendarPage";
-import React from "react";
 
 function App() {
   return (

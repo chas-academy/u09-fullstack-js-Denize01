@@ -8,7 +8,7 @@ const CalendarPage: React.FC = () => {
   return (
     <div>
       <h1>Min Träningskalender</h1>
-      <Calendar onChange={setSelectedDate} value={selectedDate} />
+      <Calendar onChange={() => setSelectedDate} value={selectedDate} />
       {selectedDate && <p>Du har valt: {selectedDate.toDateString()}</p>}
     </div>
   );
