@@ -7,6 +7,7 @@ function App() {
       <div>
         <h1>Välkommen till Min Kalender App</h1>
         <CalendarPage />
+       
       </div>
     </>
   );
