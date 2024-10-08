@@ -1,7 +1,12 @@
 import React from "react";
+import LoginForm from "../components/profile/LoginForm";
 
 const LoginPage: React.FC = () => {
-  return <h1 className="text-2xl font-bold">Login Page</h1>;
+  return (
+    <div>
+      <LoginForm />
+    </div>
+  );
 };
 
 export default LoginPage;
