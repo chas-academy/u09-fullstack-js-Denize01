@@ -35,6 +35,11 @@ const Navbar: React.FC = () => {
             Admin Dashboard
           </Link>
         </li>
+        {/* <li>
+          <Link to="/notfound" className="text-white">
+            Not Found
+          </Link>
+        </li> */}
       </ul>
     </nav>
   );
