@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // Importera Link för navigering
+import CalendarComponent from "../components/profile/CalendarComponent";
 
 const UserProfilePage: React.FC = () => {
   const [username, setUsername] = useState<string | null>("");
@@ -30,6 +31,9 @@ const UserProfilePage: React.FC = () => {
     <div>
       <h1>Welcome {username ? username : "User"}!</h1>
       <p>This is your user profile page.</p>
+
+      {/* Visa kalendern direkt här */}
+      <CalendarComponent />
 
       {/* Logga ut-knappen */}
       <button
