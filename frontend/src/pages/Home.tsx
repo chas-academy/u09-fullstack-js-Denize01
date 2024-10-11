@@ -5,10 +5,9 @@ const Home: React.FC = () => {
   return (
     <div className="flex items-center justify-center h-screen bg-gray-50">
       <div className="bg-white bg-opacity-20 border-4 border-gray-400 backdrop-blur-lg p-8 rounded-xl shadow-xl max-w-lg mx-auto">
-        {/* Välkomsttext */}
-        <h1 className="text-4xl font-bold mb-6 text-center">
-          Welcome to{" "}
-          <span className="text-pink-500 animate-bounceOnce">Trackster</span>
+        {/* Välkomsttext med bounce-effekt */}
+        <h1 className="text-4xl font-bold mb-6 text-center animate-bounce">
+          Welcome to <span className="text-black-500">Trackster</span>
         </h1>
         <p className="text-lg text-gray-700 mb-8 text-center">
           ... your personal training calendar to help you keep track of your
