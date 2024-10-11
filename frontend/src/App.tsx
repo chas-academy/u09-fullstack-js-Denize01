@@ -1,21 +1,3 @@
-// import "./App.css";
-// import CalendarPage from "./pages/CalendarPage";
-// import Navbar from "./components/common/Navbar";
-
-// function App() {
-//   return (
-//     <>
-//       <div>
-//         <Navbar />
-//         <h1>Välkommen till Min Kalender App</h1>
-//         <CalendarPage />
-//       </div>
-//     </>
-//   );
-// }
-
-// export default App;
-
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";

@@ -1,15 +1,11 @@
-import React, { useState } from "react";
-import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
+import React from "react";
+import Calender from "../components/profile/CalendarComponent";
 
 const CalendarPage: React.FC = () => {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-
   return (
     <div>
-      <h1>Min Träningskalender</h1>
-      <Calendar onChange={() => setSelectedDate} value={selectedDate} />
-      {selectedDate && <p>Du har valt: {selectedDate.toDateString()}</p>}
+      <h1>Your Training Calendar</h1>
+      <Calender /> {/* Kalenderkomponenten som hanterar all logik */}
     </div>
   );
 };
