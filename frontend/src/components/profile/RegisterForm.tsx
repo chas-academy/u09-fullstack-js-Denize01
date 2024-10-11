@@ -1,19 +1,51 @@
 import React, { useState } from "react";
 
 const RegisterForm: React.FC = () => {
-  const [username, setUsername] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState<string | null>(null); // För att hantera felmeddelanden
+  const [success, setSuccess] = useState<boolean>(false); // För att visa framgångsmeddelande
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (password !== confirmPassword) {
       alert("Passwords do not match!");
       return;
     }
-    // Här skulle du hantera registreringen, t.ex. göra ett API-anrop för att registrera användaren.
-    console.log("Registering with:", { username, email, password });
+
+    try {
+      const response = await fetch("http://localhost:3000/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          errorData.message || "Failed to register. Please try again."
+        );
+      }
+
+      const data = await response.json();
+      console.log("Registration successful:", data);
+
+      // Om registreringen lyckas, sätt ett framgångsmeddelande
+      setSuccess(true);
+      setError(null);
+    } catch (error) {
+      setError(error.message);
+      setSuccess(false);
+    }
   };
 
   return (
@@ -24,6 +56,13 @@ const RegisterForm: React.FC = () => {
       >
         <h2 className="text-2xl font-bold mb-4 text-center">Register</h2>
 
+        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+        {success && (
+          <p className="text-green-500 text-center mb-4">
+            Registration successful!
+          </p>
+        )}
+
         <div className="mb-4">
           <label htmlFor="username" className="block text-gray-700">
             Username
@@ -31,8 +70,8 @@ const RegisterForm: React.FC = () => {
           <input
             type="text"
             id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             className="w-full p-2 border border-gray-300 rounded mt-1"
             required
           />
