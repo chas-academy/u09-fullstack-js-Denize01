@@ -1,10 +1,13 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null); // För att hantera fel
   const [success, setSuccess] = useState<boolean>(false); // För att visa framgång
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,6 +35,7 @@ const LoginForm: React.FC = () => {
       // Om inloggningen lyckas, visa ett framgångsmeddelande
       setSuccess(true);
       setError(null);
+      navigate("/profile");
     } catch (error: any) {
       setError(error.message);
       setSuccess(false);
