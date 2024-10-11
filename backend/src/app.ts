@@ -1,8 +1,12 @@
 import express, { Express, Request, Response } from "express";
 import userRoutes from "./routes/userRoutes";
 import connectDB from "./config/db";
+import cors from "cors"; // Importera CORS
 
 const app: Express = express();
+
+// Använd CORS som middleware
+app.use(cors());
 
 app.use(express.json());
 
@@ -14,7 +18,7 @@ app.get("/", (req: Request, res: Response) => {
 
 app.use("/api", userRoutes);
 
-//i testsyfte
+// I testsyfte
 app.get("/test", (req: Request, res: Response) => {
   res.json({ message: "Test route works!" });
 });
