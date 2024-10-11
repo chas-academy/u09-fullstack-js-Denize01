@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom"; // Importera Link för navigering
+import { useNavigate } from "react-router-dom"; // Importera Link för navigering
 import CalendarComponent from "../components/profile/CalendarComponent";
 
 const UserProfilePage: React.FC = () => {
