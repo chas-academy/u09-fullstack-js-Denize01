@@ -4,7 +4,7 @@ import userModel from "../models/userModel";
 
 // Skapa en ny användare
 export const createUserController = async (req: Request, res: Response) => {
-  const { name, email, password, roles } = req.body; // Hämta data från frontend
+  const { username, email, password, roles } = req.body; // Hämta data från frontend
 
   try {
     // Kolla om användaren redan existerar
@@ -18,7 +18,7 @@ export const createUserController = async (req: Request, res: Response) => {
 
     // Skapa och spara den nya användaren i databasen
     const newUser = new userModel({
-      name,
+      username,
       email,
       password: hashedPassword,
       roles: roles || "user", // Om ingen roll anges, sätt till "user"
