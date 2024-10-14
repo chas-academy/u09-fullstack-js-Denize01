@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 const RegisterForm: React.FC = () => {
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -23,7 +23,7 @@ const RegisterForm: React.FC = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name,
+          username,
           email,
           password,
         }),
@@ -70,8 +70,8 @@ const RegisterForm: React.FC = () => {
           <input
             type="text"
             id="username"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             className="w-full p-2 border border-gray-300 rounded mt-1"
             required
           />
