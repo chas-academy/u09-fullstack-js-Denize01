@@ -11,6 +11,7 @@ const AdminCrudComponent: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [role, setRole] = useState("user");
   const [loading, setLoading] = useState(false);
 
@@ -37,10 +38,10 @@ const AdminCrudComponent: React.FC = () => {
 
   // Create a new user
   const createUser = async () => {
-    const response = await fetch("http://localhost:3000/api/users", {
+    const response = await fetch("http://localhost:3000/api/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, email, roles: role }),
+      body: JSON.stringify({ username, email, roles: role, password }),
     });
     if (response.ok) {
       fetchUsers(); // Uppdatera listan efter skapande
@@ -94,6 +95,13 @@ const AdminCrudComponent: React.FC = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="E-post"
+          className="border p-2 mb-2 w-full rounded-md"
+        />
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Lösenord"
           className="border p-2 mb-2 w-full rounded-md"
         />
         <select
