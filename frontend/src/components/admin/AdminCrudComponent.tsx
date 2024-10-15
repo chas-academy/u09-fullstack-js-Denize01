@@ -11,7 +11,6 @@ const AdminCrudComponent: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [role, setRole] = useState("user");
   const [loading, setLoading] = useState(false);
 
@@ -38,10 +37,10 @@ const AdminCrudComponent: React.FC = () => {
 
   // Create a new user
   const createUser = async () => {
-    const response = await fetch("http://localhost:3000/api/register", {
+    const response = await fetch("http://localhost:3000/api/users", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, email, roles: role, password }),
+      body: JSON.stringify({ username, email, roles: role }),
     });
     if (response.ok) {
       fetchUsers(); // Uppdatera listan efter skapande
@@ -55,7 +54,7 @@ const AdminCrudComponent: React.FC = () => {
     const response = await fetch(`http://localhost:3000/api/users/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ role: newRole }),
+      body: JSON.stringify({ roles: newRole }),
     });
     if (response.ok) {
       fetchUsers(); // Uppdatera listan efter uppdatering
@@ -97,13 +96,6 @@ const AdminCrudComponent: React.FC = () => {
           placeholder="E-post"
           className="border p-2 mb-2 w-full rounded-md"
         />
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Lösenord"
-          className="border p-2 mb-2 w-full rounded-md"
-        />
         <select
           value={role}
           onChange={(e) => setRole(e.target.value)}
@@ -140,12 +132,13 @@ const AdminCrudComponent: React.FC = () => {
               </div>
               <div className="flex">
                 <button
-                  onClick={() =>
+                  onClick={() => {
+                    console.log(`Changing role for user!!! ${user._id}`);
                     updateUserRole(
                       user._id,
                       user.role === "user" ? "admin" : "user"
-                    )
-                  } // Byt mellan user/admin
+                    );
+                  }} // Byt mellan user/admin
                   className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2 hover:bg-blue-600"
                 >
                   Ändra till {user.role === "user" ? "Admin" : "User"}

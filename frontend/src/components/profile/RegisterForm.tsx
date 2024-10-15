@@ -42,8 +42,12 @@ const RegisterForm: React.FC = () => {
       // Om registreringen lyckas, sätt ett framgångsmeddelande
       setSuccess(true);
       setError(null);
-    } catch (error) {
-      setError(error.message);
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message); // om err är ett Error-objekt, få dess meddelande
+      } else {
+        setError("An unexpected error occurred."); // fallback för andra typer av fel
+      }
       setSuccess(false);
     }
   };
