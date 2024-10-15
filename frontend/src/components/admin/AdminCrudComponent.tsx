@@ -11,8 +11,10 @@ const AdminCrudComponent: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [role, setRole] = useState("user");
   const [loading, setLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   // Fetch all users (Read)
   useEffect(() => {
@@ -37,15 +39,22 @@ const AdminCrudComponent: React.FC = () => {
 
   // Create a new user
   const createUser = async () => {
-    const response = await fetch("http://localhost:3000/api/users", {
+    const response = await fetch("http://localhost:3000/api/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, email, roles: role }),
+      body: JSON.stringify({ username, email, roles: role, password }),
     });
     if (response.ok) {
       fetchUsers(); // Uppdatera listan efter skapande
       setUsername(""); // Reset form
       setEmail(""); // Reset email
+      setPassword(""); //Reset password
+      setSuccessMessage("Ny användare skapad!");
+
+      //Gömmer meddelandet efter 3s
+      setTimeout(() => {
+        setSuccessMessage(null);
+      }, 3000);
     }
   };
 
@@ -54,7 +63,7 @@ const AdminCrudComponent: React.FC = () => {
     const response = await fetch(`http://localhost:3000/api/users/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ roles: newRole }),
+      body: JSON.stringify({ role: newRole }),
     });
     if (response.ok) {
       fetchUsers(); // Uppdatera listan efter uppdatering
@@ -75,8 +84,13 @@ const AdminCrudComponent: React.FC = () => {
     <div className="bg-white p-6 rounded-lg shadow-md">
       <h2 className="text-3xl font-bold mb-4 text-gray-800">
         Användarhantering
-      </h2>
-
+      </h2>{" "}
+      {/* Success message */}
+      {successMessage && (
+        <div className="bg-green-100 text-green-800 p-4 rounded mb-4">
+          {successMessage}
+        </div>
+      )}
       {/* Create User Form */}
       <div className="mb-6">
         <h3 className="text-xl font-semibold text-gray-700 mb-2">
@@ -96,6 +110,13 @@ const AdminCrudComponent: React.FC = () => {
           placeholder="E-post"
           className="border p-2 mb-2 w-full rounded-md"
         />
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Lösenord"
+          className="border p-2 mb-2 w-full rounded-md"
+        />
         <select
           value={role}
           onChange={(e) => setRole(e.target.value)}
@@ -111,7 +132,6 @@ const AdminCrudComponent: React.FC = () => {
           Skapa användare
         </button>
       </div>
-
       {/* User List */}
       <h3 className="text-xl font-semibold text-gray-700 mb-2">
         Användarlista
@@ -132,13 +152,12 @@ const AdminCrudComponent: React.FC = () => {
               </div>
               <div className="flex">
                 <button
-                  onClick={() => {
-                    console.log(`Changing role for user!!! ${user._id}`);
+                  onClick={() =>
                     updateUserRole(
                       user._id,
                       user.role === "user" ? "admin" : "user"
-                    );
-                  }} // Byt mellan user/admin
+                    )
+                  } // Byt mellan user/admin
                   className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2 hover:bg-blue-600"
                 >
                   Ändra till {user.role === "user" ? "Admin" : "User"}
