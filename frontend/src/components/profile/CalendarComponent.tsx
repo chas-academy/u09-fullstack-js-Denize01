@@ -24,10 +24,12 @@ const CalendarComponent: React.FC = () => {
   const fetchActivitiesForSelectedDate = async (date: Date) => {
     const formattedDate = date.toISOString().split("T")[0];
     try {
+      console.log("Fetching activities for:", formattedDate);
       const response = await fetch(
         `http://localhost:3000/api/activities/${formattedDate}`
       );
       const data = await response.json();
+      console.log("Fetched activities:", data);
       setActivities(data); // Uppdatera med aktiviteter för valt datum
     } catch (err) {
       console.error("Error fetching activities", err);
@@ -59,6 +61,7 @@ const CalendarComponent: React.FC = () => {
       };
 
       try {
+        console.log("Adding activity:", newActivity);
         const response = await fetch("http://localhost:3000/api/activities", {
           method: "POST",
           headers: {
@@ -68,8 +71,11 @@ const CalendarComponent: React.FC = () => {
         });
 
         if (response.ok) {
+          console.log("Activity added successfully");
           fetchActivitiesForSelectedDate(selectedDate); // Uppdatera aktiviteter efter att ha lagt till en ny
           setActivity(""); // Rensa fältet efter inmatning
+        } else {
+          console.error("Failed to add activity");
         }
       } catch (err) {
         console.error("Error adding activity", err);
