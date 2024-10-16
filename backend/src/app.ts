@@ -1,5 +1,6 @@
 import express, { Express, Request, Response } from "express";
 import userRoutes from "./routes/userRoutes";
+import activityRoutes from "./routes/activityRoutes";
 import connectDB from "./config/db";
 import cors from "cors"; // Importera CORS
 
@@ -17,6 +18,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/api", userRoutes);
+app.use("/api", activityRoutes);
 
 // I testsyfte
 app.get("/test", (req: Request, res: Response) => {
