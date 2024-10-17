@@ -15,6 +15,7 @@ const LoginForm: React.FC = () => {
     try {
       const response = await fetch("http://localhost:3000/api/login", {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
@@ -32,7 +33,7 @@ const LoginForm: React.FC = () => {
       const data = await response.json();
       console.log("Login successful:", data);
 
-      localStorage.setItem("username", data.user.name);
+      localStorage.setItem("username", data.username);
 
       // Om inloggningen lyckas, visa ett framgångsmeddelande
       setSuccess(true);

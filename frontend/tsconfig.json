@@ -1,7 +1,26 @@
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ]
+  "compilerOptions": {
+    "target": "ES2020", // Modern JavaScript-standard, specificerad till ES2020
+    "module": "ESNext", // Använd modern modulhantering
+    "jsx": "react-jsx", // Hantera JSX för React
+    "strict": true, // Aktivera strikt typkontroll
+    "esModuleInterop": true, // Gör det enkelt att importera CommonJS-moduler
+    "forceConsistentCasingInFileNames": true, // Kontrollera stora och små bokstäver
+    "skipLibCheck": true, // Hoppa över typkontroll för bibliotek
+    "moduleResolution": "bundler", // Anpassad bundlermodulhantering (för Vite)
+    "allowImportingTsExtensions": true, // Tillåt importering av filändelser i TS
+    "isolatedModules": true, // Varje fil behandlas isolerat för snabbare bundling
+    "moduleDetection": "force", // Tvinga modulupptäckt
+    "noEmit": true, // Generera inga JavaScript-filer, endast för typkontroll
+    "useDefineForClassFields": true, // ES-standard för att definiera klassfält
+
+    /* Linting */
+    "noUnusedLocals": true, // Varning för oanvända variabler
+    "noUnusedParameters": true, // Varning för oanvända funktionsparametrar
+    "noFallthroughCasesInSwitch": true, // Undvik fall-through i switch-satser
+    "allowSyntheticDefaultImports": true // Tillåt default-importer för moduler utan default-export
+  },
+  "lib": ["ES2020", "DOM", "DOM.Iterable"], // Lägger till bibliotek för ES2020 och DOM
+  "include": ["src"], // Inkludera alla filer i "src"-mappen
+  "exclude": ["node_modules"] // Exkludera node_modules för snabbare kompilering
 }
