@@ -26,7 +26,10 @@ const CalendarComponent: React.FC = () => {
     try {
       console.log("Fetching activities for:", formattedDate);
       const response = await fetch(
-        `http://localhost:3000/api/activities/${formattedDate}`
+        `http://localhost:3000/api/activities/${formattedDate}`,
+        {
+          credentials: "include",
+        }
       );
       const data = await response.json();
       console.log("Fetched activities:", data);
@@ -64,6 +67,7 @@ const CalendarComponent: React.FC = () => {
         console.log("Adding activity:", newActivity);
         const response = await fetch("http://localhost:3000/api/activities", {
           method: "POST",
+          credentials: "include",
           headers: {
             "Content-Type": "application/json",
           },
