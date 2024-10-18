@@ -63,8 +63,8 @@ const RegisterForm: React.FC = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-neutral-900 via-purple-500 to-indigo-900">
       <div className="bg-white bg-opacity-20 border-4 border-gray-400 backdrop-blur-lg p-6 rounded-xl shadow-xl max-w-xs mx-auto my-8">
-        <h2 className="text-3xl font-bold mb-4 text-center text-white animate-bounce">
-          Register to <span className="text-black-500">Trackster</span>
+        <h2 className="text-3xl font-bold mb-4 text-center text-black animate-bounce">
+          Register
         </h2>
 
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}

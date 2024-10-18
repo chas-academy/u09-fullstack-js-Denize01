@@ -11,8 +11,9 @@ const Navbar: React.FC = () => {
     <div className="flex flex-wrap place-items-center">
       <nav className="flex justify-between items-center bg-gray-800 text-white w-full py-4 relative z-20">
         {/* TracksterApp text */}
-        <p className="text-lg font-bold text-left ml-4">T R A C K S T E R</p>
-
+        <p className="text-lg font-bold text-left ml-4 tracking-widest">
+          T R A C K S T E R&nbsp;&nbsp;&nbsp;A P P
+        </p>
         {/* Hamburgerknapp (endast synlig på små skärmar) */}
         <button
           className="text-white md:hidden ml-auto mr-4 focus:outline-none z-30"

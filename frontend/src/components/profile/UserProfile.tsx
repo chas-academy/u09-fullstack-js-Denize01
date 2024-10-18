@@ -30,10 +30,12 @@ const UserProfilePage: React.FC = () => {
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-neutral-900 via-purple-500 to-indigo-900">
       {/* Välkomstmeddelandet utanför huvudcontainern, med extra margin-top */}
       <div className="text-center animate-bounce bg-opacity-20 bg-white p-4 rounded-lg shadow-md mb-8 mt-16">
-        <h1 className="text-3xl font-bold text-white">
+        <h1 className="text-3xl font-bold text-black">
           Welcome {username ? username : "User"}!
         </h1>
-        <p className="text-lg text-white">This is your user profile page.</p>
+        <p className="text-lg text-white">
+          Another day, another amazing workout!
+        </p>
       </div>
 
       {/* Huvudcontainer som innehåller kalender och annan funktionalitet */}

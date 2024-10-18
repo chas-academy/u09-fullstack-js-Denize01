@@ -48,8 +48,8 @@ const LoginForm: React.FC = () => {
   return (
     <div className="flex items-center justify-center h-screen bg-gradient-to-r from-neutral-900 via-purple-500 to-indigo-900">
       <div className="bg-white bg-opacity-20 border-4 border-gray-400 backdrop-blur-lg p-8 rounded-xl shadow-xl max-w-lg mx-auto">
-        <h2 className="text-4xl font-bold mb-6 text-center text-white animate-bounce">
-          Login to <span className="text-black-500">Trackster</span>
+        <h2 className="text-3xl font-bold mb-6 text-center text-black animate-bounce">
+          Login
         </h2>
 
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
