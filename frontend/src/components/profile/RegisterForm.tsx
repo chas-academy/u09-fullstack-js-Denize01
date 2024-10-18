@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Importera useNavigate
 
 const RegisterForm: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -7,6 +8,8 @@ const RegisterForm: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState<string | null>(null); // För att hantera felmeddelanden
   const [success, setSuccess] = useState<boolean>(false); // För att visa framgångsmeddelande
+
+  const navigate = useNavigate(); // Skapa navigate-funktionen
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,6 +45,11 @@ const RegisterForm: React.FC = () => {
       // Om registreringen lyckas, sätt ett framgångsmeddelande
       setSuccess(true);
       setError(null);
+
+      // Vid lyckad registrering, navigera till LoginPage efter en kort fördröjning
+      setTimeout(() => {
+        navigate("/login"); // Vidarebefordra användaren till LoginPage
+      }, 2000); // Du kan justera tidsfördröjningen om du vill
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message); // om err är ett Error-objekt, få dess meddelande
@@ -53,83 +61,91 @@ const RegisterForm: React.FC = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-6 rounded shadow-md w-80"
-      >
-        <h2 className="text-2xl font-bold mb-4 text-center">Register</h2>
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-neutral-900 via-purple-500 to-indigo-900">
+      <div className="bg-white bg-opacity-20 border-4 border-gray-400 backdrop-blur-lg p-6 rounded-xl shadow-xl max-w-xs mx-auto my-8">
+        <h2 className="text-3xl font-bold mb-4 text-center text-white animate-bounce">
+          Register to <span className="text-black-500">Trackster</span>
+        </h2>
 
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
         {success && (
-          <p className="text-green-500 text-center mb-4">
-            Registration successful!
+          <p className="text-white text-center mb-4">
+            Registration successful! Redirecting to login...
           </p>
         )}
 
-        <div className="mb-4">
-          <label htmlFor="username" className="block text-gray-700">
-            Username
-          </label>
-          <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded mt-1"
-            required
-          />
-        </div>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label htmlFor="username" className="block text-white text-lg">
+              Username
+            </label>
+            <input
+              type="text"
+              id="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Enter your username"
+              className="w-full p-2 border border-gray-300 rounded-lg mt-1 focus:outline-none focus:ring-2 focus:ring-purple-500"
+              required
+            />
+          </div>
 
-        <div className="mb-4">
-          <label htmlFor="email" className="block text-gray-700">
-            Email
-          </label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded mt-1"
-            required
-          />
-        </div>
+          <div>
+            <label htmlFor="email" className="block text-white text-lg">
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email"
+              className="w-full p-2 border border-gray-300 rounded-lg mt-1 focus:outline-none focus:ring-2 focus:ring-purple-500"
+              required
+            />
+          </div>
 
-        <div className="mb-4">
-          <label htmlFor="password" className="block text-gray-700">
-            Password
-          </label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded mt-1"
-            required
-          />
-        </div>
+          <div>
+            <label htmlFor="password" className="block text-white text-lg">
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your password"
+              className="w-full p-2 border border-gray-300 rounded-lg mt-1 focus:outline-none focus:ring-2 focus:ring-purple-500"
+              required
+            />
+          </div>
 
-        <div className="mb-4">
-          <label htmlFor="confirmPassword" className="block text-gray-700">
-            Confirm Password
-          </label>
-          <input
-            type="password"
-            id="confirmPassword"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded mt-1"
-            required
-          />
-        </div>
+          <div>
+            <label
+              htmlFor="confirmPassword"
+              className="block text-white text-lg"
+            >
+              Confirm Password
+            </label>
+            <input
+              type="password"
+              id="confirmPassword"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder="Confirm your password"
+              className="w-full p-2 border border-gray-300 rounded-lg mt-1 focus:outline-none focus:ring-2 focus:ring-purple-500"
+              required
+            />
+          </div>
 
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-        >
-          Register
-        </button>
-      </form>
+          <button
+            type="submit"
+            className="w-full bg-purple-600 text-white p-2 rounded-lg font-semibold hover:bg-purple-700 transition duration-300"
+          >
+            Register
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
