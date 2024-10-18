@@ -14,7 +14,7 @@ const App: React.FC = () => {
     <Router>
       <div>
         <Navbar />
-        <div className="p-4">
+        <div className="#">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<LoginPage />} />

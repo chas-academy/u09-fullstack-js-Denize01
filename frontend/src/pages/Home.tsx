@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Home: React.FC = () => {
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-50">
+    <div className="flex items-center justify-center h-screen bg-gradient-to-r from-neutral-900 via-purple-500 to-indigo-900">
       <div className="bg-white bg-opacity-20 border-4 border-gray-400 backdrop-blur-lg p-8 rounded-xl shadow-xl max-w-lg mx-auto">
         {/* Välkomsttext med bounce-effekt */}
         <h1 className="text-4xl font-bold mb-6 text-center animate-bounce">
@@ -19,7 +19,7 @@ const Home: React.FC = () => {
           <span>
             <Link
               to="/login"
-              className="underline text-blue-500 hover:text-blue-700"
+              className="underline text-purple-50 hover:text-gray-700"
             >
               Login
             </Link>{" "}
@@ -32,7 +32,7 @@ const Home: React.FC = () => {
           Don't have an account?{" "}
           <Link
             to="/register"
-            className="font-bold text-blue-500 hover:text-blue-700"
+            className="font-bold text-purple-50 hover:text-gray-700"
           >
             Register here
           </Link>
