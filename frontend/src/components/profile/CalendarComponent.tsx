@@ -89,26 +89,36 @@ const CalendarComponent: React.FC = () => {
 
   return (
     <div>
-      <h2>Training Calendar</h2>
+      {/* <h2 className="text-white text-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-indigo-500 mb-4"></h2> */}
       <Calendar onChange={handleDateChange} value={selectedDate} />
 
       {selectedDate && (
         <div>
-          <h3>Selected Date: {selectedDate.toDateString()}</h3>
+          <h3 className="text-xl font-semibold text-gray-800 mt-4">
+            Selected Date: {selectedDate.toDateString()}
+          </h3>
           <input
             type="text"
             value={activity}
             onChange={handleActivityChange}
             placeholder="Log an activity"
+            className="border rounded-md p-2 w-full mt-2"
           />
-          <button onClick={handleAddActivity}>Add Activity</button>
+          <button
+            onClick={handleAddActivity}
+            className="bg-indigo-500 text-white px-4 py-2 mt-2 rounded hover:bg-indigo-600 transition duration-300"
+          >
+            Add Activity
+          </button>
         </div>
       )}
 
       {selectedDate && activities.length > 0 && (
-        <div>
-          <h3>Activities on {selectedDate.toDateString()}</h3>
-          <ul>
+        <div className="mt-6">
+          <h3 className="text-xl font-semibold text-gray-800 mb-2">
+            Activities on {selectedDate.toDateString()}
+          </h3>
+          <ul className="list-disc pl-4 text-gray-700">
             {activities.map((a, index) => (
               <li key={index}>{a.activity}</li>
             ))}
