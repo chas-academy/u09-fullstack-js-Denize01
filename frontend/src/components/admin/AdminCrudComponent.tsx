@@ -130,7 +130,7 @@ const AdminCrudComponent: React.FC = () => {
             </select>
             <button
               onClick={createUser}
-              className="w-full bg-green-500 text-white px-4 py-2 mt-2 rounded hover:bg-green-600 transition duration-300"
+              className="w-full bg-purple-600 text-white p-3 rounded-lg font-semibold hover:bg-purple-700 transition duration-300"
             >
               Skapa användare
             </button>
@@ -149,18 +149,17 @@ const AdminCrudComponent: React.FC = () => {
                   {users.map((user) => (
                     <li
                       key={user._id}
-                      className="border p-4 mb-2 rounded-md shadow-sm flex justify-between items-center"
+                      className="border text-white p-4 mb-2 rounded-md shadow-sm flex justify-between items-center"
                     >
                       <div>
                         <h4 className="text-lg font-bold">{user.username}</h4>
-                        <p className="text-sm text-gray-600">
+                        <p className="text-sm text-white">
                           E-post: {user.email}
                         </p>
-                        <p className="text-sm text-gray-600">
-                          Roll: {user.role}
-                        </p>
+                        <p className="text-sm text-white">Roll: {user.role}</p>
                       </div>
                       <div className="flex">
+                        {/* Edit Icon (Pencil) */}
                         <button
                           onClick={() =>
                             updateUserRole(
@@ -168,16 +167,35 @@ const AdminCrudComponent: React.FC = () => {
                               user.role === "user" ? "admin" : "user"
                             )
                           }
-                          className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2 hover:bg-blue-600"
+                          className="text-white hover:text-gray-300 transition duration-300"
                         >
-                          Ändra till {user.role === "user" ? "Admin" : "User"}
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                            className="w-6 h-6"
+                          >
+                            <path d="M16.862 3.387a2.25 2.25 0 113.182 3.182l-1.044 1.045-3.182-3.182 1.044-1.045zM4.5 19.5v-3.182L14.318 6.5l3.182 3.182L7.682 19.5H4.5z" />
+                          </svg>
                         </button>
 
+                        {/* Trashcan Icon */}
                         <button
                           onClick={() => deleteUser(user._id)}
-                          className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
+                          className="text-white hover:text-gray-300 transition duration-300 ml-4"
                         >
-                          Ta bort
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                            className="w-6 h-6"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M5.25 4.5A.75.75 0 016 3.75h12a.75.75 0 010 1.5h-.75v14.25A2.25 2.25 0 0115 21.75H9a2.25 2.25 0 01-2.25-2.25V4.5H6a.75.75 0 01-.75-.75zm3 3A.75.75 0 018.25 9v9a.75.75 0 001.5 0V9a.75.75 0 00-1.5 0zm4.5.75a.75.75 0 00-.75-.75.75.75 0 00-.75.75v9a.75.75 0 001.5 0v-9zm2.25-.75a.75.75 0 00-.75.75v9a.75.75 0 001.5 0V9a.75.75 0 00-.75-.75z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
                         </button>
                       </div>
                     </li>
