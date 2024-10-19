@@ -59,7 +59,7 @@ const UserProfilePage: React.FC = () => {
         </div>
 
         {/* Logga ut-knappen */}
-        <div className="flex justify-center mt-8">
+        <div className="flex justify-center mt-8 md:block hidden">
           <button
             onClick={handleLogout}
             className="w-full md:w-auto bg-purple-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-purple-700 transition duration-300"

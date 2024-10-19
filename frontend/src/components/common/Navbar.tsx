@@ -1,10 +1,19 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
+
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("username");
+    localStorage.removeItem("authToken");
+
+    navigate("/login");
   };
 
   return (
@@ -71,6 +80,14 @@ const Navbar: React.FC = () => {
             <Link to="/admin" className="hover:text-gray-200">
               Admin Dashboard
             </Link>
+          </li>
+          <li className="md:hidden">
+            <button
+              onClick={handleLogout}
+              className="w-min md:w-auto bg-purple-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-purple-700 transition duration-300"
+            >
+              Logout
+            </button>
           </li>
         </ul>
       </nav>
