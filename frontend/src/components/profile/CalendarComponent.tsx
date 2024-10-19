@@ -4,6 +4,7 @@ import "react-calendar/dist/Calendar.css";
 
 // Typ för aktivitet (kan också läggas i en separat fil om du vill organisera bättre)
 interface Activity {
+  _id?: string; // För att identifiera varje aktivitet unikt från databasen (om backend returnerar ett id)
   date: string;
   activity: string;
 }
@@ -25,6 +26,7 @@ const CalendarComponent: React.FC = () => {
     const formattedDate = date.toISOString().split("T")[0];
     try {
       console.log("Fetching activities for:", formattedDate);
+
       const response = await fetch(
         `http://localhost:3000/api/activities/${formattedDate}`,
         {
@@ -33,6 +35,7 @@ const CalendarComponent: React.FC = () => {
       );
       const data = await response.json();
       console.log("Fetched activities:", data);
+
       setActivities(data); // Uppdatera med aktiviteter för valt datum
     } catch (err) {
       console.error("Error fetching activities", err);
@@ -65,6 +68,7 @@ const CalendarComponent: React.FC = () => {
 
       try {
         console.log("Adding activity:", newActivity);
+
         const response = await fetch("http://localhost:3000/api/activities", {
           method: "POST",
           credentials: "include",
@@ -76,6 +80,7 @@ const CalendarComponent: React.FC = () => {
 
         if (response.ok) {
           console.log("Activity added successfully");
+
           fetchActivitiesForSelectedDate(selectedDate); // Uppdatera aktiviteter efter att ha lagt till en ny
           setActivity(""); // Rensa fältet efter inmatning
         } else {
@@ -87,9 +92,33 @@ const CalendarComponent: React.FC = () => {
     }
   };
 
+  // När användaren vill radera en aktivitet
+  const handleDeleteActivity = async (activityId: string | undefined) => {
+    if (!activityId) return;
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/activities/${activityId}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        }
+      );
+
+      if (response.ok) {
+        // Uppdatera aktiviteter efter radering
+        if (selectedDate) {
+          fetchActivitiesForSelectedDate(selectedDate);
+        }
+      } else {
+        console.error("Failed to delete activity");
+      }
+    } catch (err) {
+      console.error("Error deleting activity", err);
+    }
+  };
+
   return (
     <div>
-      {/* <h2 className="text-white text-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-indigo-500 mb-4"></h2> */}
       <Calendar onChange={handleDateChange} value={selectedDate} />
 
       {selectedDate && (
@@ -119,8 +148,26 @@ const CalendarComponent: React.FC = () => {
             Activities on {selectedDate.toDateString()}
           </h3>
           <ul className="list-disc pl-4 text-gray-700">
-            {activities.map((a, index) => (
-              <li key={index}>{a.activity}</li>
+            {activities.map((a) => (
+              <li key={a._id} className="flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                  <p>🥵</p>
+                  <span>{a.activity}</span>
+                </div>
+                <svg
+                  onClick={() => handleDeleteActivity(a._id)}
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="w-6 h-6 text-white hover:text-gray-300 cursor-pointer transition duration-300"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M6.225 4.225a.75.75 0 011.06 0L12 8.94l4.715-4.715a.75.75 0 111.06 1.06L13.06 10l4.715 4.715a.75.75 0 11-1.06 1.06L12 11.06l-4.715 4.715a.75.75 0 11-1.06-1.06L10.94 10 6.225 5.285a.75.75 0 010-1.06z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </li>
             ))}
           </ul>
         </div>
