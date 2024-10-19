@@ -56,4 +56,37 @@ router.get(
   }
 );
 
+// DELETE: Radera en aktivitet baserat på ID
+router.delete(
+  "/activities/:id",
+  authenticateToken,
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const userId = req.session.userId; // Hämta userId från sessionen
+
+    if (!userId) {
+      return res.status(401).json({ message: "Not logged in" });
+    }
+
+    try {
+      // Försök hitta och radera aktiviteten från databasen som tillhör den inloggade användaren
+      const deletedActivity = await Activity.findOneAndDelete({
+        _id: id,
+        userId,
+      });
+
+      if (!deletedActivity) {
+        return res
+          .status(404)
+          .json({ message: "Activity not found or not authorized" });
+      }
+
+      res.status(200).json({ message: "Activity deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting activity:", error);
+      res.status(500).json({ message: "Failed to delete activity", error });
+    }
+  }
+);
+
 export default router;

@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import userModel from "../models/userModel";
+import activity from "../models/activity";
 
 // Skapa en ny användare
 export const createUserController = async (req: Request, res: Response) => {
@@ -111,5 +112,23 @@ export const deleteUserController = async (req: Request, res: Response) => {
   } catch (error) {
     console.error("Error deleting user:", error);
     res.status(500).json({ message: "Server error" });
+  }
+};
+
+// DELETE-rutt för att radera en aktivitet
+export const deleteActivity = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  try {
+    // Försök hitta och radera aktiviteten från databasen
+    const deletedActivity = await activity.findByIdAndDelete(id);
+
+    if (!deletedActivity) {
+      return res.status(404).json({ message: "Activity not found" });
+    }
+
+    res.status(200).json({ message: "Activity deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to delete activity", error });
   }
 };
