@@ -92,7 +92,7 @@ const LoginForm: React.FC = () => {
             type="submit"
             className="w-full bg-purple-600 text-white p-3 rounded-lg font-semibold hover:bg-purple-700 transition duration-300"
           >
-            Log in
+            Login
           </button>
         </form>
 
