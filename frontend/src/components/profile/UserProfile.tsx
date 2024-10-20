@@ -2,8 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CalendarComponent from "./CalendarComponent";
 
+interface Activity {
+  _id: string;
+  date: string;
+  description: string;
+}
+
 const UserProfilePage: React.FC = () => {
   const [username, setUsername] = useState<string | null>("");
+  const [activities, setActivities] = useState<Activity[]>([]);
+  const [searchTerm, setSearchterm] = useState("");
   const navigate = useNavigate();
 
   // Hämta användarnamnet från localStorage när sidan laddas
@@ -17,6 +25,37 @@ const UserProfilePage: React.FC = () => {
     }
   }, [navigate]);
 
+  //Hantera sökning
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchterm(e.target.value);
+
+    if (value.trim() === "") {
+      setActivities([]);
+      return;
+    }
+    fetchActivities(value);
+  };
+
+  //Hämta loggar från backend baserat på sökterm
+  const fetchActivities = async (search: string = "") => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/activities?search=${search}`,
+        {
+          credentials: "include",
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setActivities(data);
+      } else {
+        setActivities([]);
+      }
+    } catch (err) {
+      console.error("Error fetching activities", err);
+    }
+  };
   const handleLogout = () => {
     // Ta bort användaren från localStorage
     localStorage.removeItem("username");
@@ -51,9 +90,26 @@ const UserProfilePage: React.FC = () => {
           {/* Placeholder för annan funktionalitet */}
           <div className="flex flex-col items-center justify-center">
             <div className="bg-opacity-20 bg-white p-4 rounded-lg shadow-md">
-              <p className="text-white text-lg">
-                Other user-related content here.
-              </p>
+              <p className="text-white text-lg">Sök aktiviteter</p>
+              <input
+                type="text"
+                placeholder="Sök bland dina loggar"
+                value={searchTerm}
+                onChange={handleSearchChange}
+                className="border p-2 mb-4 w-full rounded-md"
+              />
+              <div className="max-h-64 overflow-y-auto">
+                <ul className="list-disc pl-4 text-gray-700">
+                  {activities.map((activity) => (
+                    <li key={activity._id}>
+                      <p className="text-white">{activity.description}</p>
+                      <p className="text-white text-sm">
+                        Datum: {activity.date}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
         </div>
