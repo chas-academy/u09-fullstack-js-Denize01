@@ -56,6 +56,41 @@ router.get(
   }
 );
 
+//GET: Sök aktivitet baserat på en sökterm
+
+router.get(
+  "/activities",
+  authenticateToken,
+  async (req: Request, res: Response) => {
+    const userId = req.session.userId;
+    const search = req.query.search as string;
+
+    if (!userId) {
+      return res.status(401).json({ message: "Not logged in" });
+    }
+
+    // Kontrollera om söktermen är tom
+    if (!search) {
+      return res.status(400).json({ message: "Search term is required" });
+    }
+
+    try {
+      // Sök efter aktiviteter med regex om söktermen finns
+      const activities = await Activity.find({
+        userId,
+        activity: { $regex: search, $options: "i" }, // Case-insensitive sökning
+      });
+
+      res.status(200).json(activities);
+    } catch (err) {
+      console.error("Error searching activities:", err);
+      res
+        .status(500)
+        .json({ message: "Failed to search activities", error: err });
+    }
+  }
+);
+
 // DELETE: Radera en aktivitet baserat på ID
 router.delete(
   "/activities/:id",
