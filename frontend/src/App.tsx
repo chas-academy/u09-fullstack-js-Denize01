@@ -8,6 +8,7 @@ import NotFoundPage from "./pages/NotFoundPage";
 import CalendarPage from "./pages/CalendarPage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
 import Navbar from "./components/common/Navbar";
+import Footer from "./components/common/Footer";
 
 const App: React.FC = () => {
   return (
@@ -25,6 +26,7 @@ const App: React.FC = () => {
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </div>
+        <Footer />
       </div>
     </Router>
   );
