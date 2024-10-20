@@ -9,9 +9,14 @@ const Navbar: React.FC = () => {
     setIsOpen(!isOpen);
   };
 
+  const closeMenu = () => {
+    setIsOpen(false);
+  };
+
   const handleLogout = () => {
     localStorage.removeItem("username");
     localStorage.removeItem("authToken");
+    setIsOpen(false); //stänger menyn efter utloggning
 
     navigate("/login");
   };
@@ -52,32 +57,52 @@ const Navbar: React.FC = () => {
           } md:translate-y-0 px-4 font-semibold space-y-4 md:space-y-0 md:space-x-12 py-4 md:py-0`}
         >
           <li>
-            <Link to="/" className="hover:text-gray-200">
+            <Link to="/" className="hover:text-gray-200" onClick={closeMenu}>
               Home
             </Link>
           </li>
           <li>
-            <Link to="/login" className="hover:text-gray-200">
+            <Link
+              to="/login"
+              className="hover:text-gray-200"
+              onClick={closeMenu}
+            >
               Login
             </Link>
           </li>
           <li>
-            <Link to="/register" className="hover:text-gray-200">
+            <Link
+              to="/register"
+              className="hover:text-gray-200"
+              onClick={closeMenu}
+            >
               Register
             </Link>
           </li>
           <li>
-            <Link to="/profile" className="hover:text-gray-200">
+            <Link
+              to="/profile"
+              className="hover:text-gray-200"
+              onClick={closeMenu}
+            >
               Profile
             </Link>
           </li>
           <li>
-            <Link to="/calendar" className="hover:text-gray-200">
+            <Link
+              to="/calendar"
+              className="hover:text-gray-200"
+              onClick={closeMenu}
+            >
               Calendar
             </Link>
           </li>
           <li>
-            <Link to="/admin" className="hover:text-gray-200">
+            <Link
+              to="/admin"
+              className="hover:text-gray-200"
+              onClick={closeMenu}
+            >
               Admin Dashboard
             </Link>
           </li>
