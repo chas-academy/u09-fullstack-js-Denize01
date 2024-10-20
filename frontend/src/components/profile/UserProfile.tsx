@@ -65,6 +65,36 @@ const UserProfilePage: React.FC = () => {
     navigate("/login");
   };
 
+  const handleDeleteAccount = async () => {
+    if (
+      !window.confirm(
+        "Är du säker på att du vill radera ditt konto? Detta kan inte ångras."
+      )
+    ) {
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:3000/api/user/delete", {
+        method: "DELETE",
+        credentials: "include", // Om du använder cookies för autentisering
+      });
+
+      if (response.ok) {
+        // Logga ut användaren och rensa localStorage
+        localStorage.removeItem("username");
+        localStorage.removeItem("authToken");
+
+        // Navigera till startsidan eller login
+        navigate("/login");
+      } else {
+        console.error("Failed to delete account");
+      }
+    } catch (error) {
+      console.error("Error deleting account", error);
+    }
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-neutral-900 via-purple-500 to-indigo-900">
       {/* Välkomstmeddelandet utanför huvudcontainern, med extra margin-top */}
@@ -109,6 +139,17 @@ const UserProfilePage: React.FC = () => {
                     </li>
                   ))}
                 </ul>
+              </div>
+            </div>
+            <div className="flex flex-col items-center justify-center">
+              <div className="bg-opacity-20 bg-white p-4 rounded-lg shadow-md mt-6">
+                <h2 className="text-white text-lg mb-2">Radera ditt konto</h2>
+                <button
+                  onClick={handleDeleteAccount}
+                  className="w-full bg-red-600 text-white p-3 rounded-lg font-semibold hover:bg-red-700 transition duration-300"
+                >
+                  Radera Konto
+                </button>
               </div>
             </div>
           </div>
