@@ -13,6 +13,7 @@ const AdminCrudComponent: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("user");
+  const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
@@ -35,6 +36,18 @@ const AdminCrudComponent: React.FC = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  // Funktion för att filtrera användare baserat på söksträngen
+  const filteredUsers = users.filter(
+    (user) =>
+      user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // Funktion för att hantera sökning
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
   };
 
   // Create a new user
@@ -141,12 +154,22 @@ const AdminCrudComponent: React.FC = () => {
             <h3 className="text-xl font-semibold text-gray-700 mb-2">
               Användarlista
             </h3>
+
+            {/* Sökfält */}
+            <input
+              type="text"
+              placeholder="Sök användare..."
+              value={searchTerm}
+              onChange={handleSearchChange}
+              className="border p-2 mb-4 w-full rounded-md"
+            />
+
             {loading ? (
               <p className="text-gray-600">Laddar användare...</p>
             ) : (
               <div className="max-h-64 overflow-y-auto">
                 <ul>
-                  {users.map((user) => (
+                  {filteredUsers.map((user) => (
                     <li
                       key={user._id}
                       className="border text-white p-4 mb-2 rounded-md shadow-sm flex justify-between items-center"
