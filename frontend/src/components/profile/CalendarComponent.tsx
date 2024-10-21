@@ -24,6 +24,7 @@ const CalendarComponent: React.FC = () => {
   // Hämta aktiviteter från backend för valt datum
   const fetchActivitiesForSelectedDate = async (date: Date) => {
     const formattedDate = date.toISOString().split("T")[0];
+    console.log("ISO Date", formattedDate);
     try {
       console.log("Fetching activities for:", formattedDate);
 
@@ -49,6 +50,7 @@ const CalendarComponent: React.FC = () => {
 
   // När användaren väljer ett datum i kalendern
   const handleDateChange: CalendarProps["onChange"] = (value) => {
+    console.log("Date value", value);
     if (Array.isArray(value)) {
       setSelectedDate(value[0]);
     } else if (value) {

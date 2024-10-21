@@ -117,7 +117,7 @@ const UserProfilePage: React.FC = () => {
             </div>
           </div>
 
-          {/* Placeholder för annan funktionalitet */}
+          {/* Placeholder för Sök aktivitet */}
           <div className="flex flex-col items-center justify-center">
             <div className="bg-opacity-20 bg-white p-4 rounded-lg shadow-md">
               <p className="text-white text-lg">Sök aktiviteter</p>
