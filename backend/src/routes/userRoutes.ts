@@ -3,7 +3,7 @@ import {
   createUserController,
   getUsersController,
   loginUserController,
-  updateUserRoleController,
+  updateUserController,
   deleteUserController,
   deleteOwnAccountController,
 } from "../controllers/userController";
@@ -30,7 +30,7 @@ router.post("/login", async (req: Request, res: Response) => {
 
     // Spara userId i sessionen
     req.session.userId = user._id;
-    console.log("created usedID", req.session.userId);
+    console.log("User logged in, session userId:", req.session.userId);
     res
       .status(200)
       .json({ message: "Login successful", username: user.username });
@@ -42,10 +42,19 @@ router.post("/login", async (req: Request, res: Response) => {
 router.post("/register", createUserController);
 router.get("/users", getUsersController);
 // router.post("/login", loginUserController);
-router.put("/users/:id", updateUserRoleController);
+
+router.get("/session-info", (req: Request, res: Response) => {
+  res.json({
+    sessionId: req.session.id,
+    userId: req.session.userId,
+    session: req.session,
+  });
+});
+
+router.put("/users/:id", authenticateToken, updateUserController);
 router.delete("/users/:id", deleteUserController);
 
-// Radera användarens eget konto (autentisering krävs)
+// Radera användarens eget konto (användarens funktion)
 router.delete("/user/delete", authenticateToken, deleteOwnAccountController);
 
 export default router;

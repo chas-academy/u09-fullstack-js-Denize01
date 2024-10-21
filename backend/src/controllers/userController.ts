@@ -72,30 +72,6 @@ export const loginUserController = async (req: Request, res: Response) => {
   }
 };
 
-// Uppdatera användarens roll F::::FUNKAR ÄNNU INTE
-export const updateUserRoleController = async (req: Request, res: Response) => {
-  const { id } = req.params; // Få användarens ID från URL:en
-  const { roles } = req.body; // Få den nya rollen från request body
-
-  try {
-    // Hitta och uppdatera användarens roll
-    const updatedUser = await userModel.findByIdAndUpdate(
-      id,
-      { roles }, // Uppdatera rollen
-      { new: true } // Returnera den uppdaterade användaren
-    );
-
-    if (!updatedUser) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    res.status(200).json({ message: "User role updated", user: updatedUser });
-  } catch (error) {
-    console.error("Error updating user role:", error);
-    res.status(500).json({ message: "Server error" });
-  }
-};
-
 // Radera en användare
 export const deleteUserController = async (req: Request, res: Response) => {
   const { id } = req.params; // Få användarens ID från URL:en
@@ -160,6 +136,37 @@ export const deleteOwnAccountController = async (
     });
   } catch (error) {
     console.error("Error deleting own account:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Uppdatera endast användarnamn
+export const updateUserController = async (req: Request, res: Response) => {
+  const { id } = req.params; // Få användarens ID från URL:en
+  const { username } = req.body; // Hämta nytt användarnamn från request body
+
+  try {
+    // Kontrollera att användarnamn är tillhandahållet
+    if (!username) {
+      return res.status(400).json({ message: "Username is required" });
+    }
+
+    // Hitta och uppdatera användaren i databasen
+    const updatedUser = await userModel.findByIdAndUpdate(
+      id,
+      { username }, // Endast uppdatera användarnamnet
+      { new: true } // Returnera den uppdaterade användaren
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "User updated successfully", user: updatedUser });
+  } catch (error) {
+    console.error("Error updating user:", error);
     res.status(500).json({ message: "Server error" });
   }
 };

@@ -16,6 +16,8 @@ const AdminCrudComponent: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [editingUserId, setEditingUserId] = useState<string | null>(null);
+  const [newUsername, setNewUsername] = useState<string>("");
 
   // Fetch all users (Read)
   useEffect(() => {
@@ -70,15 +72,22 @@ const AdminCrudComponent: React.FC = () => {
     }
   };
 
-  // Update user role
-  const updateUserRole = async (id: string, newRole: string) => {
-    const response = await fetch(`http://localhost:3000/api/users/${id}`, {
+  // Update username
+  const handleUpdateUsername = async (userId: string) => {
+    if (!newUsername.trim()) {
+      return; // Kontrollera att användarnamnet inte är tomt
+    }
+
+    const response = await fetch(`http://localhost:3000/api/users/${userId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ role: newRole }),
+      body: JSON.stringify({ username: newUsername }),
+      credentials: "include",
     });
+
     if (response.ok) {
       fetchUsers();
+      setEditingUserId(null); // Återställ redigeringsläget efter sparandet
     }
   };
 
@@ -92,6 +101,12 @@ const AdminCrudComponent: React.FC = () => {
     }
   };
 
+  // Edit button click handler
+  const handleEditClick = (user: User) => {
+    setEditingUserId(user._id);
+    setNewUsername(user.username);
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-neutral-900 via-purple-500 to-indigo-900">
       {/* Admin Dashboard Header */}
@@ -100,7 +115,7 @@ const AdminCrudComponent: React.FC = () => {
       </div>
 
       {/* Main content */}
-      <div className="bg-white bg-opacity-20 border-4 border-gray-400 backdrop-blur-lg p-6 rounded-xl shadow-xl max-w-6xl mx-auto my-8">
+      <div className="bg-white bg-opacity-20 border-4 border-gray-400 backdrop-blur-lg p-6 rounded-xl shadow-xl max-w-6xl mx-auto my-8 w-full">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Skapa användare */}
           <div className="bg-opacity-20 bg-white p-4 rounded-lg shadow-md">
@@ -175,34 +190,59 @@ const AdminCrudComponent: React.FC = () => {
                       className="border text-white p-4 mb-2 rounded-md shadow-sm flex justify-between items-center"
                     >
                       <div>
-                        <h4 className="text-lg font-bold">{user.username}</h4>
+                        {editingUserId === user._id ? (
+                          <input
+                            type="text"
+                            value={newUsername}
+                            onChange={(e) => setNewUsername(e.target.value)}
+                            className="border p-2 rounded-md text-gray-700"
+                          />
+                        ) : (
+                          <h4 className="text-lg font-bold">{user.username}</h4>
+                        )}
                         <p className="text-sm text-white">
                           E-post: {user.email}
                         </p>
                         <p className="text-sm text-white">Roll: {user.role}</p>
                       </div>
                       <div className="flex">
-                        {/* Edit Icon (Pencil) */}
-                        <button
-                          onClick={() =>
-                            updateUserRole(
-                              user._id,
-                              user.role === "user" ? "admin" : "user"
-                            )
-                          }
-                          className="text-white hover:text-gray-300 transition duration-300"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="currentColor"
-                            className="w-6 h-6"
+                        {editingUserId === user._id ? (
+                          <button
+                            onClick={() => handleUpdateUsername(user._id)}
+                            className="text-white hover:text-gray-300 transition duration-300"
                           >
-                            <path d="M16.862 3.387a2.25 2.25 0 113.182 3.182l-1.044 1.045-3.182-3.182 1.044-1.045zM4.5 19.5v-3.182L14.318 6.5l3.182 3.182L7.682 19.5H4.5z" />
-                          </svg>
-                        </button>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                              className="w-6 h-6"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M5 13l4 4L19 7"
+                              />
+                            </svg>
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => handleEditClick(user)}
+                            className="text-white hover:text-gray-300 transition duration-300"
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              fill="currentColor"
+                              className="w-6 h-6"
+                            >
+                              <path d="M16.862 3.387a2.25 2.25 0 113.182 3.182l-1.044 1.045-3.182-3.182 1.044-1.045zM4.5 19.5v-3.182L14.318 6.5l3.182 3.182L7.682 19.5H4.5z" />
+                            </svg>
+                          </button>
+                        )}
 
-                        {/* Trashcan Icon */}
+                        {/* Trashcan Icon for deleting */}
                         <button
                           onClick={() => deleteUser(user._id)}
                           className="text-white hover:text-gray-300 transition duration-300 ml-4"
