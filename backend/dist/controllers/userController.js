@@ -12,9 +12,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUserController = exports.updateUserRoleController = exports.loginUserController = exports.getUsersController = exports.createUserController = void 0;
+exports.updateUserController = exports.deleteOwnAccountController = exports.deleteActivity = exports.deleteUserController = exports.loginUserController = exports.getUsersController = exports.createUserController = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const userModel_1 = __importDefault(require("../models/userModel"));
+const activity_1 = __importDefault(require("../models/activity"));
 // Skapa en ny användare
 const createUserController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { username, email, password, roles } = req.body; // Hämta data från frontend
@@ -79,31 +80,11 @@ const loginUserController = (req, res) => __awaiter(void 0, void 0, void 0, func
     }
 });
 exports.loginUserController = loginUserController;
-// Uppdatera användarens roll F::::FUNKAR ÄNNU INTE
-const updateUserRoleController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params; // Få användarens ID från URL:en
-    const { roles } = req.body; // Få den nya rollen från request body
-    try {
-        // Hitta och uppdatera användarens roll
-        const updatedUser = yield userModel_1.default.findByIdAndUpdate(id, { roles }, // Uppdatera rollen
-        { new: true } // Returnera den uppdaterade användaren
-        );
-        if (!updatedUser) {
-            return res.status(404).json({ message: "User not found" });
-        }
-        res.status(200).json({ message: "User role updated", user: updatedUser });
-    }
-    catch (error) {
-        console.error("Error updating user role:", error);
-        res.status(500).json({ message: "Server error" });
-    }
-});
-exports.updateUserRoleController = updateUserRoleController;
 // Radera en användare
 const deleteUserController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params; // Få användarens ID från URL:en
     try {
-        // Hitta och radera användaren
+        // Hitta och radera användaren av Admin
         const deletedUser = yield userModel_1.default.findByIdAndDelete(id);
         if (!deletedUser) {
             return res.status(404).json({ message: "User not found" });
@@ -116,3 +97,71 @@ const deleteUserController = (req, res) => __awaiter(void 0, void 0, void 0, fun
     }
 });
 exports.deleteUserController = deleteUserController;
+// DELETE-rutt för att radera en aktivitet
+const deleteActivity = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    try {
+        // Försök hitta och radera aktiviteten från databasen
+        const deletedActivity = yield activity_1.default.findByIdAndDelete(id);
+        if (!deletedActivity) {
+            return res.status(404).json({ message: "Activity not found" });
+        }
+        res.status(200).json({ message: "Activity deleted successfully" });
+    }
+    catch (error) {
+        res.status(500).json({ message: "Failed to delete activity", error });
+    }
+});
+exports.deleteActivity = deleteActivity;
+// Användare raderar ditt eget konto
+const deleteOwnAccountController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const userId = req.session.userId; // Hämtar användarens ID från sessionen
+    try {
+        // Radera användaren baserat på sessionens användar-ID
+        const deletedUser = yield userModel_1.default.findByIdAndDelete(userId);
+        if (!deletedUser) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        // Rensa sessionen efter radering
+        req.session.destroy((err) => {
+            if (err) {
+                console.error("Error destroying session:", err);
+                return res.status(500).json({ message: "Error destroying session" });
+            }
+            res
+                .status(200)
+                .json({ message: "Your account has been deleted successfully" });
+        });
+    }
+    catch (error) {
+        console.error("Error deleting own account:", error);
+        res.status(500).json({ message: "Server error" });
+    }
+});
+exports.deleteOwnAccountController = deleteOwnAccountController;
+// Uppdatera endast användarnamn
+const updateUserController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params; // Få användarens ID från URL:en
+    const { username } = req.body; // Hämta nytt användarnamn från request body
+    try {
+        // Kontrollera att användarnamn är tillhandahållet
+        if (!username) {
+            return res.status(400).json({ message: "Username is required" });
+        }
+        // Hitta och uppdatera användaren i databasen
+        const updatedUser = yield userModel_1.default.findByIdAndUpdate(id, { username }, // Endast uppdatera användarnamnet
+        { new: true } // Returnera den uppdaterade användaren
+        );
+        if (!updatedUser) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res
+            .status(200)
+            .json({ message: "User updated successfully", user: updatedUser });
+    }
+    catch (error) {
+        console.error("Error updating user:", error);
+        res.status(500).json({ message: "Server error" });
+    }
+});
+exports.updateUserController = updateUserController;
