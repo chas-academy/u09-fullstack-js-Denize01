@@ -1,4 +1,13 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -46,4 +55,55 @@ router.get("/activities/:date", authenticateToken_1.authenticateToken, (req, res
         res.status(500).json({ message: "Failed to fetch activities" });
     }
 });
+//GET: Sök aktivitet baserat på en sökterm
+router.get("/activities", authenticateToken_1.authenticateToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const userId = req.session.userId;
+    const search = req.query.search;
+    if (!userId) {
+        return res.status(401).json({ message: "Not logged in" });
+    }
+    // Kontrollera om söktermen är tom
+    if (!search) {
+        return res.status(400).json({ message: "Search term is required" });
+    }
+    try {
+        // Sök efter aktiviteter med regex om söktermen finns
+        const activities = yield activity_1.default.find({
+            userId,
+            activity: { $regex: search, $options: "i" }, // Case-insensitive sökning
+        });
+        res.status(200).json(activities);
+    }
+    catch (err) {
+        console.error("Error searching activities:", err);
+        res
+            .status(500)
+            .json({ message: "Failed to search activities", error: err });
+    }
+}));
+// DELETE: Radera en aktivitet baserat på ID
+router.delete("/activities/:id", authenticateToken_1.authenticateToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const userId = req.session.userId; // Hämta userId från sessionen
+    if (!userId) {
+        return res.status(401).json({ message: "Not logged in" });
+    }
+    try {
+        // Försök hitta och radera aktiviteten från databasen som tillhör den inloggade användaren
+        const deletedActivity = yield activity_1.default.findOneAndDelete({
+            _id: id,
+            userId,
+        });
+        if (!deletedActivity) {
+            return res
+                .status(404)
+                .json({ message: "Activity not found or not authorized" });
+        }
+        res.status(200).json({ message: "Activity deleted successfully" });
+    }
+    catch (error) {
+        console.error("Error deleting activity:", error);
+        res.status(500).json({ message: "Failed to delete activity", error });
+    }
+}));
 exports.default = router;

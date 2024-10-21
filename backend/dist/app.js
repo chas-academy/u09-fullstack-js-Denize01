@@ -11,13 +11,16 @@ const db_1 = __importDefault(require("./config/db"));
 const cors_1 = __importDefault(require("cors")); // Importera CORS
 const app = (0, express_1.default)();
 // Använd CORS som middleware
-app.use((0, cors_1.default)());
+app.use((0, cors_1.default)({
+    origin: `http://localhost:5173`,
+    credentials: true,
+}));
 app.use(express_1.default.json());
 // Konfigurera sessionshantering
 app.use((0, express_session_1.default)({
     secret: "your-secret-key", // Borde lagras i .env-filen
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: { secure: false }, // Sätt till 'true' om du använder HTTPS
 }));
 (0, db_1.default)();
