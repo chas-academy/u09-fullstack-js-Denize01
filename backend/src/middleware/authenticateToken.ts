@@ -6,7 +6,7 @@ export const authenticateToken = (
   next: NextFunction
 ) => {
   // Kontrollera om userId finns i sessionen
-  console.log("userid", req.session.userId);
+  console.log("Session userId:", req.session.userId); // Lägg till detta för att se vad som händer
   if (!req.session.userId) {
     return res.status(401).json({ message: "You are not logged in." });
   }
