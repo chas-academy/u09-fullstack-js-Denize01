@@ -5,9 +5,11 @@ import {
   loginUserController,
   updateUserRoleController,
   deleteUserController,
+  deleteOwnAccountController,
 } from "../controllers/userController";
 import userModel from "../models/userModel";
 import { Request, Response } from "express";
+import { authenticateToken } from "../middleware/authenticateToken";
 
 declare module "express-session" {
   export interface SessionData {
@@ -42,5 +44,8 @@ router.get("/users", getUsersController);
 // router.post("/login", loginUserController);
 router.put("/users/:id", updateUserRoleController);
 router.delete("/users/:id", deleteUserController);
+
+// Radera användarens eget konto (autentisering krävs)
+router.delete("/user/delete", authenticateToken, deleteOwnAccountController);
 
 export default router;

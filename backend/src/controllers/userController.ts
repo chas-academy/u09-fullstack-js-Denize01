@@ -101,7 +101,7 @@ export const deleteUserController = async (req: Request, res: Response) => {
   const { id } = req.params; // Få användarens ID från URL:en
 
   try {
-    // Hitta och radera användaren
+    // Hitta och radera användaren av Admin
     const deletedUser = await userModel.findByIdAndDelete(id);
 
     if (!deletedUser) {
@@ -130,5 +130,36 @@ export const deleteActivity = async (req: Request, res: Response) => {
     res.status(200).json({ message: "Activity deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: "Failed to delete activity", error });
+  }
+};
+
+// Användare raderar ditt eget konto
+export const deleteOwnAccountController = async (
+  req: Request,
+  res: Response
+) => {
+  const userId = req.session.userId; // Hämtar användarens ID från sessionen
+
+  try {
+    // Radera användaren baserat på sessionens användar-ID
+    const deletedUser = await userModel.findByIdAndDelete(userId);
+
+    if (!deletedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Rensa sessionen efter radering
+    req.session.destroy((err) => {
+      if (err) {
+        console.error("Error destroying session:", err);
+        return res.status(500).json({ message: "Error destroying session" });
+      }
+      res
+        .status(200)
+        .json({ message: "Your account has been deleted successfully" });
+    });
+  } catch (error) {
+    console.error("Error deleting own account:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };
