@@ -86,6 +86,7 @@ const AdminCrudComponent: React.FC = () => {
     });
 
     if (response.ok) {
+      console.log("Namnbyte lyckades!");
       fetchUsers();
       setEditingUserId(null); // Återställ redigeringsläget efter sparandet
     }
