@@ -137,7 +137,9 @@ const RegisterForm: React.FC = () => {
               required
             />
           </div>
-
+          <p className="text-xs italic tect-white mt-2">
+            * By registering, you agree to our terms and conditions.
+          </p>
           <button
             type="submit"
             className="w-full bg-purple-600 text-white p-2 rounded-lg font-semibold hover:bg-purple-700 transition duration-300"

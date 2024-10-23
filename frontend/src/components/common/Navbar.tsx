@@ -90,15 +90,6 @@ const Navbar: React.FC = () => {
           </li>
           <li>
             <Link
-              to="/calendar"
-              className="hover:text-gray-200"
-              onClick={closeMenu}
-            >
-              Calendar
-            </Link>
-          </li>
-          <li>
-            <Link
               to="/admin"
               className="hover:text-gray-200"
               onClick={closeMenu}
