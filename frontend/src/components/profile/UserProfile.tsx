@@ -141,28 +141,28 @@ const UserProfilePage: React.FC = () => {
                 </ul>
               </div>
             </div>
-            <div className="flex flex-col items-center justify-center">
-              <div className="bg-opacity-20 bg-white p-4 rounded-lg shadow-md mt-6">
-                <h2 className="text-white text-lg mb-2">Radera ditt konto</h2>
+            <div className="flex justify-center mt-8 space-x-4">
+              {/* Logga ut-knappen */}
+              <div className="md:block hidden">
+                <button
+                  onClick={handleLogout}
+                  className="w-full md:w-auto bg-purple-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-purple-700 transition duration-300"
+                >
+                  Logga ut
+                </button>
+              </div>
+
+              {/* Radera konto-knappen */}
+              <div className="flex flex-col items-center justify-center">
                 <button
                   onClick={handleDeleteAccount}
-                  className="w-full bg-red-600 text-white p-3 rounded-lg font-semibold hover:bg-red-700 transition duration-300"
+                  className="w-full md:w-auto bg-pink-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-pink-700 transition duration-300"
                 >
                   Radera Konto
                 </button>
               </div>
             </div>
           </div>
-        </div>
-
-        {/* Logga ut-knappen */}
-        <div className="flex justify-center mt-8 md:block hidden">
-          <button
-            onClick={handleLogout}
-            className="w-full md:w-auto bg-purple-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-purple-700 transition duration-300"
-          >
-            Logga ut
-          </button>
         </div>
       </div>
     </div>
