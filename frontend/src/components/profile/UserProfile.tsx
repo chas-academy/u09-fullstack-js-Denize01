@@ -120,10 +120,10 @@ const UserProfilePage: React.FC = () => {
           {/* Placeholder för Sök aktivitet */}
           <div className="flex flex-col items-center justify-center">
             <div className="bg-opacity-20 bg-white p-4 rounded-lg shadow-md">
-              <p className="text-white text-lg">Sök aktiviteter</p>
+              <p className="text-white text-lg">Search activities</p>
               <input
                 type="text"
-                placeholder="Sök bland dina loggar"
+                placeholder="Find your workout"
                 value={searchTerm}
                 onChange={handleSearchChange}
                 className="border p-2 mb-4 w-full rounded-md"
@@ -134,7 +134,7 @@ const UserProfilePage: React.FC = () => {
                     <li key={activity._id}>
                       <p className="text-white">{activity.description}</p>
                       <p className="text-white text-sm">
-                        Datum: {activity.date}
+                        Date: {activity.date}
                       </p>
                     </li>
                   ))}
@@ -148,7 +148,7 @@ const UserProfilePage: React.FC = () => {
                   onClick={handleLogout}
                   className="w-full md:w-auto bg-purple-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-purple-700 transition duration-300"
                 >
-                  Logga ut
+                  Logout
                 </button>
               </div>
 
@@ -158,7 +158,7 @@ const UserProfilePage: React.FC = () => {
                   onClick={handleDeleteAccount}
                   className="w-full md:w-auto bg-pink-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-pink-700 transition duration-300"
                 >
-                  Radera Konto
+                  Delete account
                 </button>
               </div>
             </div>
