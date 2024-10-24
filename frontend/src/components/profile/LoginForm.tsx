@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import ButtonComponent from "../common/Button";
 
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -88,12 +89,7 @@ const LoginForm: React.FC = () => {
             />
           </div>
 
-          <button
-            type="submit"
-            className="w-full bg-purple-600 text-white p-3 rounded-lg font-semibold hover:bg-purple-700 transition duration-300"
-          >
-            Login
-          </button>
+          <ButtonComponent type="submit">Login</ButtonComponent>
         </form>
 
         <p className="text-center text-white mt-6">
