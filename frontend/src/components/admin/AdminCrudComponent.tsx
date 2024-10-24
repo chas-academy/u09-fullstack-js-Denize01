@@ -64,7 +64,7 @@ const AdminCrudComponent: React.FC = () => {
       setUsername("");
       setEmail("");
       setPassword("");
-      setSuccessMessage("Ny användare skapad!");
+      setSuccessMessage("New user created!");
 
       setTimeout(() => {
         setSuccessMessage(null);
@@ -89,6 +89,7 @@ const AdminCrudComponent: React.FC = () => {
       console.log("Namnbyte lyckades!");
       fetchUsers();
       setEditingUserId(null); // Återställ redigeringsläget efter sparandet
+      setSuccessMessage("Successfully updated username!");
     }
   };
 
@@ -99,6 +100,7 @@ const AdminCrudComponent: React.FC = () => {
     });
     if (response.ok) {
       fetchUsers();
+      setSuccessMessage("User deleted!");
     }
   };
 
@@ -121,7 +123,7 @@ const AdminCrudComponent: React.FC = () => {
           {/* Skapa användare */}
           <div className="bg-opacity-20 bg-white p-4 rounded-lg shadow-md">
             <h3 className="text-xl font-semibold text-gray-700 mb-2">
-              Skapa ny användare
+              Create a new user
             </h3>
             {successMessage && (
               <div className="bg-green-100 text-green-800 p-4 rounded mb-4">
@@ -132,21 +134,21 @@ const AdminCrudComponent: React.FC = () => {
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              placeholder="Användarnamn"
+              placeholder="Username"
               className="border p-2 mb-2 w-full rounded-md"
             />
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="E-post"
+              placeholder="Email"
               className="border p-2 mb-2 w-full rounded-md"
             />
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Lösenord"
+              placeholder="Password"
               className="border p-2 mb-2 w-full rounded-md"
             />
             <select
@@ -157,31 +159,32 @@ const AdminCrudComponent: React.FC = () => {
               <option value="user">User</option>
               <option value="admin">Admin</option>
             </select>
+
             <button
               onClick={createUser}
               className="w-full bg-purple-600 text-white p-3 rounded-lg font-semibold hover:bg-purple-700 transition duration-300"
             >
-              Skapa användare
+              Create user
             </button>
           </div>
 
           {/* Hämta användare (med scroll) */}
           <div className="bg-opacity-20 bg-white p-4 rounded-lg shadow-md">
             <h3 className="text-xl font-semibold text-gray-700 mb-2">
-              Användarlista
+              Userlist
             </h3>
 
             {/* Sökfält */}
             <input
               type="text"
-              placeholder="Sök användare..."
+              placeholder="Search for a user..."
               value={searchTerm}
               onChange={handleSearchChange}
               className="border p-2 mb-4 w-full rounded-md"
             />
 
             {loading ? (
-              <p className="text-gray-600">Laddar användare...</p>
+              <p className="text-gray-600">Users loading...</p>
             ) : (
               <div className="max-h-64 overflow-y-auto">
                 <ul>
@@ -202,9 +205,9 @@ const AdminCrudComponent: React.FC = () => {
                           <h4 className="text-lg font-bold">{user.username}</h4>
                         )}
                         <p className="text-sm text-white">
-                          E-post: {user.email}
+                          Email: {user.email}
                         </p>
-                        <p className="text-sm text-white">Roll: {user.role}</p>
+                        <p className="text-sm text-white">Role: {user.role}</p>
                       </div>
                       <div className="flex">
                         {editingUserId === user._id ? (
@@ -272,9 +275,9 @@ const AdminCrudComponent: React.FC = () => {
           {/* Tom div för framtida funktioner */}
           <div className="bg-opacity-20 bg-white p-4 rounded-lg shadow-md">
             <h3 className="text-xl font-semibold text-gray-700 mb-2">
-              Framtida funktioner
+              Future features
             </h3>
-            <p className="text-gray-600">Kommer snart...</p>
+            <p className="text-gray-600">In progress...</p>
           </div>
         </div>
       </div>

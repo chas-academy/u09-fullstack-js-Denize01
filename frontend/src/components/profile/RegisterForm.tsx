@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Importera useNavigate
+import ButtonComponent from "../common/Button";
 
 const RegisterForm: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -140,12 +141,7 @@ const RegisterForm: React.FC = () => {
           <p className="text-xs italic tect-white mt-2">
             * By registering, you agree to our terms and conditions.
           </p>
-          <button
-            type="submit"
-            className="w-full bg-purple-600 text-white p-2 rounded-lg font-semibold hover:bg-purple-700 transition duration-300"
-          >
-            Register
-          </button>
+          <ButtonComponent type="submit">Register</ButtonComponent>
         </form>
       </div>
     </div>
