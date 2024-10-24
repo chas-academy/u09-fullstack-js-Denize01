@@ -56,6 +56,7 @@ const UserProfilePage: React.FC = () => {
       console.error("Error fetching activities", err);
     }
   };
+
   const handleLogout = () => {
     // Ta bort användaren från localStorage
     localStorage.removeItem("username");
