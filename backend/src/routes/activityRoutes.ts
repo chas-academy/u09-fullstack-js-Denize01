@@ -32,11 +32,26 @@ router.post("/activities", authenticateToken, (req: Request, res: Response) => {
 });
 
 // GET: Hämta aktiviteter för den inloggade användaren och ett specifikt datum
-router.get(
-  "/activities/:date",
+router.get("/activities", authenticateToken, async (req, res) => {
+  const userId = req.session.userId;
+  if (!userId) {
+    return res.status(401).json({ message: "Not logged in" });
+  }
+
+  try {
+    const activities = await Activity.find({ userId });
+    res.status(200).json(activities); // Returnera alla aktiviteter för användaren
+  } catch (err) {
+    res.status(500).json({ message: "Failed to fetch activities" });
+  }
+});
+
+// DELETE: Radera en aktivitet baserat på ID
+router.delete(
+  "/activities/:id",
   authenticateToken,
-  (req: Request, res: Response) => {
-    const { date } = req.params;
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
     const userId = req.session.userId; // Hämta userId från sessionen
 
     if (!userId) {
@@ -44,52 +59,61 @@ router.get(
     }
 
     try {
-      Activity.find({ date, userId })
-        .then((activities) => res.status(200).json(activities))
-        .catch((err) =>
-          res.status(500).json({ message: "Failed to fetch activities" })
-        );
-    } catch (err) {
-      console.error("Error fetching activities:", err);
-      res.status(500).json({ message: "Failed to fetch activities" });
+      // Försök hitta och radera aktiviteten från databasen som tillhör den inloggade användaren
+      const deletedActivity = await Activity.findOneAndDelete({
+        _id: id,
+        userId,
+      });
+
+      if (!deletedActivity) {
+        return res
+          .status(404)
+          .json({ message: "Activity not found or not authorized" });
+      }
+
+      res.status(200).json({ message: "Activity deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting activity:", error);
+      res.status(500).json({ message: "Failed to delete activity", error });
     }
   }
 );
 
 //GET: Sök aktivitet baserat på en sökterm
 
-router.get(
-  "/activities",
-  authenticateToken,
-  async (req: Request, res: Response) => {
-    const userId = req.session.userId;
-    const search = req.query.search as string;
+// router.get(
+//   "/activities",
+//   authenticateToken,
+//   async (req: Request, res: Response) => {
+//     const userId = req.session.userId;
 
-    if (!userId) {
-      return res.status(401).json({ message: "Not logged in" });
-    }
+//     if (!userId) {
+//       return res.status(401).json({ message: "Not logged in" });
+//     }
 
-    // Kontrollera om söktermen är tom
-    if (!search) {
-      return res.status(400).json({ message: "Search term is required" });
-    }
+//     try {
+//       const activities = await Activity.find({ userId });
+//       res.status(200).json(activities); // Returnera alla aktiviteter
+//     } catch (err) {
+//       console.error("Error fetching activities:", err);
+//       res.status(500).json({ message: "Failed to fetch activities" });
+//     }
+//   }
+// );
 
-    try {
-      // Sök efter aktiviteter med regex om söktermen finns
-      const activities = await Activity.find({
-        userId,
-        activity: { $regex: search, $options: "i" }, // Case-insensitive sökning
-      });
-
-      res.status(200).json(activities);
-    } catch (err) {
-      console.error("Error searching activities:", err);
-      res
-        .status(500)
-        .json({ message: "Failed to search activities", error: err });
-    }
+router.get("/activities", authenticateToken, async (req, res) => {
+  const userId = req.session.userId;
+  if (!userId) {
+    return res.status(401).json({ message: "Not logged in" });
   }
-);
+
+  try {
+    const activities = await Activity.find({ userId });
+    res.status(200).json(activities); // Returnera alla aktiviteter för användaren
+  } catch (err) {
+    res.status(500).json({ message: "Failed to fetch activities" });
+  }
+});
 
 // DELETE: Radera en aktivitet baserat på ID
 router.delete(
