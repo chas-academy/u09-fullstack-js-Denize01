@@ -52,7 +52,7 @@ Trackster App är under utveckling, med kommande funktioner som notifikationer o
 
      ```env
      NODE_ENV=development
-     MONGO_URI=<MongoDB URI>
+     MONGO_URI=<Din egna MongoDB URI>
      PORT=5000
      JWT_SECRET=<JWT secret> //Kommer snart.
      ```
