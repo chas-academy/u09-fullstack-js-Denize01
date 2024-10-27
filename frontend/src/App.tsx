@@ -5,7 +5,6 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import UserProfilePage from "./pages/UserProfilePage";
 import NotFoundPage from "./pages/NotFoundPage";
-import CalendarPage from "./pages/CalendarPage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
 import Navbar from "./components/common/Navbar";
 import Footer from "./components/common/Footer";
