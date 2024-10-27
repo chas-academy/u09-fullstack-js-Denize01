@@ -7,6 +7,7 @@ const LoginForm: React.FC = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null); // För att hantera fel
   const [success, setSuccess] = useState<boolean>(false); // För att visa framgång
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
   const navigate = useNavigate();
 
@@ -14,7 +15,7 @@ const LoginForm: React.FC = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:3000/api/login", {
+      const response = await fetch(`${API_BASE_URL}/api/login`, {
         method: "POST",
         credentials: "include",
         headers: {

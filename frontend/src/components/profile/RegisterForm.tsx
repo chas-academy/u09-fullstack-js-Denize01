@@ -9,6 +9,7 @@ const RegisterForm: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState<string | null>(null); // För att hantera felmeddelanden
   const [success, setSuccess] = useState<boolean>(false); // För att visa framgångsmeddelande
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
   const navigate = useNavigate(); // Skapa navigate-funktionen
 
@@ -21,7 +22,7 @@ const RegisterForm: React.FC = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/api/register", {
+      const response = await fetch(`${API_BASE_URL}api/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
