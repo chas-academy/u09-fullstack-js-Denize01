@@ -4,22 +4,17 @@ import userRoutes from "./routes/userRoutes";
 import activityRoutes from "./routes/activityRoutes";
 import connectDB from "./config/db";
 import cors from "cors";
-import dotenv from "dotenv";
-
-dotenv.config();
+import cookieParser from "cookie-parser";
 
 const app: Express = express();
 
-// Använd miljövariabler för frontend-URL och sessionshemlighet
-const FRONTEND_URL =
-  process.env.REACT_APP_API_BASE_URL || "http://tracksterapp.netlify.app";
-const SESSION_SECRET = process.env.SESSION_SECRET || "your-secret-key";
+app.use(cookieParser());
 
-// Konfigurera CORS
+// Använd CORS som middleware
 app.use(
   cors({
-    origin: FRONTEND_URL, // Tillåt endast anrop från frontend-URL
-    credentials: true, // Tillåt cookies vid API-anrop
+    origin: `http://localhost:5173`,
+    credentials: true,
   })
 );
 
@@ -28,26 +23,23 @@ app.use(express.json());
 // Konfigurera sessionshantering
 app.use(
   session({
-    secret: SESSION_SECRET, // Hämtas från .env
+    secret: "your-secret-key", // Borde lagras i .env-filen
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: process.env.NODE_ENV === "production" }, // Säkra cookies endast i produktion
+    cookie: { secure: false }, // Sätt till 'true' om du använder HTTPS
   })
 );
 
-// Anslut till databasen
 connectDB();
 
-// Testroute
 app.get("/", (req: Request, res: Response) => {
   res.send("Express + TypeScript Server");
 });
 
-// API-rutter
 app.use("/api", userRoutes);
 app.use("/api", activityRoutes);
 
-// Testroute för att verifiera API-åtkomst
+// I testsyfte
 app.get("/test", (req: Request, res: Response) => {
   res.json({ message: "Test route works!" });
 });

@@ -18,7 +18,6 @@ const AdminCrudComponent: React.FC = () => {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [editingUserId, setEditingUserId] = useState<string | null>(null);
   const [newUsername, setNewUsername] = useState<string>("");
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
   // Fetch all users (Read)
   useEffect(() => {
@@ -28,7 +27,7 @@ const AdminCrudComponent: React.FC = () => {
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`${API_BASE_URL}/api/users`);
+      const response = await fetch("http://localhost:3000/api/users");
       if (!response.ok) {
         throw new Error("Något gick fel med API-anropet");
       }
@@ -55,7 +54,7 @@ const AdminCrudComponent: React.FC = () => {
 
   // Create a new user
   const createUser = async () => {
-    const response = await fetch(`${API_BASE_URL}/api/register`, {
+    const response = await fetch("http://localhost:3000/api/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, email, roles: role, password }),
@@ -79,7 +78,7 @@ const AdminCrudComponent: React.FC = () => {
       return; // Kontrollera att användarnamnet inte är tomt
     }
 
-    const response = await fetch(`${API_BASE_URL}/api/users/${userId}`, {
+    const response = await fetch(`http://localhost:3000/api/users/${userId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username: newUsername }),
@@ -96,7 +95,7 @@ const AdminCrudComponent: React.FC = () => {
 
   // Delete user
   const deleteUser = async (id: string) => {
-    const response = await fetch(`${API_BASE_URL}/api/users/${id}`, {
+    const response = await fetch(`http://localhost:3000/api/users/${id}`, {
       method: "DELETE",
     });
     if (response.ok) {

@@ -7,7 +7,6 @@ const LoginForm: React.FC = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null); // För att hantera fel
   const [success, setSuccess] = useState<boolean>(false); // För att visa framgång
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
   const navigate = useNavigate();
 
@@ -15,7 +14,7 @@ const LoginForm: React.FC = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`${API_BASE_URL}/api/login`, {
+      const response = await fetch("http://localhost:3000/api/login", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -35,16 +34,27 @@ const LoginForm: React.FC = () => {
       const data = await response.json();
       console.log("Login successful:", data);
 
-      localStorage.setItem("username", data.username);
+      localStorage.setItem("username", data.user.username);
+      localStorage.setItem("roles", data.user.roles);
 
-      // Om inloggningen lyckas, visa ett framgångsmeddelande
-      setSuccess(true);
-      setError(null);
-      navigate("/profile");
+      if (data.user.roles === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/profile");
+      }
     } catch (error: any) {
       setError(error.message);
       setSuccess(false);
     }
+
+    // Om inloggningen lyckas, visa ett framgångsmeddelande
+    //   setSuccess(true);
+    //   setError(null);
+    //   navigate("/profile");
+    // } catch (error: any) {
+    //   setError(error.message);
+    //   setSuccess(false);
+    // }
   };
 
   return (

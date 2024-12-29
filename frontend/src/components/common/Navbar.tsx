@@ -16,8 +16,10 @@ const Navbar: React.FC = () => {
   const handleLogout = () => {
     localStorage.removeItem("username");
     localStorage.removeItem("authToken");
-    setIsOpen(false); //stänger menyn efter utloggning
+    localStorage.removeItem("roles"); // Ta bort rollen från localStorage
+    localStorage.removeItem("adminAuthToken");
 
+    setIsOpen(false); //stänger menyn efter utloggning
     navigate("/login");
   };
 
@@ -89,13 +91,15 @@ const Navbar: React.FC = () => {
             </Link>
           </li>
           <li>
-            <Link
-              to="/admin"
-              className="hover:text-gray-200"
-              onClick={closeMenu}
-            >
-              Admin Dashboard
-            </Link>
+            {localStorage.getItem("roles") === "admin" && (
+              <Link
+                to="/admin"
+                className="hover:text-gray-200"
+                onClick={closeMenu}
+              >
+                Admin Dashboard
+              </Link>
+            )}
           </li>
           <li className="md:hidden">
             <button

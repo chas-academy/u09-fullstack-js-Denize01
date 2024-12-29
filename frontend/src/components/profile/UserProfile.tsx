@@ -13,7 +13,6 @@ const UserProfilePage: React.FC = () => {
   const [activities, setActivities] = useState<Activity[]>([]);
   const [searchTerm, setSearchterm] = useState("");
   const navigate = useNavigate();
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
   // Hämta användarnamnet från localStorage när sidan laddas
   useEffect(() => {
@@ -42,7 +41,7 @@ const UserProfilePage: React.FC = () => {
   const fetchActivities = async (search: string = "") => {
     try {
       const response = await fetch(
-        `${API_BASE_URL}/api/activities?search=${search}`,
+        `http://localhost:3000/api/activities?search=${search}`,
         {
           credentials: "include",
         }
@@ -57,9 +56,16 @@ const UserProfilePage: React.FC = () => {
       console.error("Error fetching activities", err);
     }
   };
+  // Ta bort användaren från localStorage
+  const handleLogout = async () => {
+    await fetch("http://localhost:3000/api/logout", {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-  const handleLogout = () => {
-    // Ta bort användaren från localStorage
     localStorage.removeItem("username");
     localStorage.removeItem("authToken");
 
@@ -77,7 +83,7 @@ const UserProfilePage: React.FC = () => {
     }
 
     try {
-      const response = await fetch(`${API_BASE_URL}/api/user/delete`, {
+      const response = await fetch("http://localhost:3000/api/user/delete", {
         method: "DELETE",
         credentials: "include", // Om du använder cookies för autentisering
       });

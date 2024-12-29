@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import userModel from "../models/userModel";
 import activity from "../models/activity";
+import jwt from "jsonwebtoken";
 
 // Skapa en ny användare
 export const createUserController = async (req: Request, res: Response) => {
@@ -47,6 +48,17 @@ export const getUsersController = async (req: Request, res: Response) => {
   }
 };
 
+export const logoutUserController = async (req: Request, res: Response) => {
+  res.clearCookie("token"),
+    {
+      httpOnly: true,
+    };
+
+  res.status(200).json({
+    message: "Successfully logged out!",
+  });
+};
+
 // Inloggningsfunktion
 export const loginUserController = async (req: Request, res: Response) => {
   const { email, password } = req.body; // Ta emot inloggningsuppgifter
@@ -63,6 +75,22 @@ export const loginUserController = async (req: Request, res: Response) => {
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid email or password" });
     }
+    console.log(user);
+
+    let token = jwt.sign(
+      { user: user },
+      "8df254a9b6db0571414ab57b232f6f4b31987514120cf052822a83aff18c9414bede0da145e643c5fa13a1bd8bce0903d424a20e7e17ab617995e57a216c308f",
+      {
+        expiresIn: "24h",
+      }
+    );
+
+    const cookieOptions = {
+      httpOnly: true,
+    };
+    res.cookie("token", token, cookieOptions);
+
+    req.session.userId = user._id;
 
     // Om inloggningen lyckas, returnera användarinformation eller token
     res.status(200).json({ message: "Login successful", user });
