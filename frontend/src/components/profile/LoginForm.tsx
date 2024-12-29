@@ -35,15 +35,26 @@ const LoginForm: React.FC = () => {
       console.log("Login successful:", data);
 
       localStorage.setItem("username", data.user.username);
+      localStorage.setItem("roles", data.user.roles);
 
-      // Om inloggningen lyckas, visa ett framgångsmeddelande
-      setSuccess(true);
-      setError(null);
-      navigate("/profile");
+      if (data.user.roles === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/profile");
+      }
     } catch (error: any) {
       setError(error.message);
       setSuccess(false);
     }
+
+    // Om inloggningen lyckas, visa ett framgångsmeddelande
+    //   setSuccess(true);
+    //   setError(null);
+    //   navigate("/profile");
+    // } catch (error: any) {
+    //   setError(error.message);
+    //   setSuccess(false);
+    // }
   };
 
   return (

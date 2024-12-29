@@ -5,10 +5,10 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import UserProfilePage from "./pages/UserProfilePage";
 import NotFoundPage from "./pages/NotFoundPage";
-import CalendarPage from "./pages/CalendarPage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
 import Navbar from "./components/common/Navbar";
 import Footer from "./components/common/Footer";
+import AdminRoute from "./components/admin/AdminRoute";
 
 const App: React.FC = () => {
   return (
@@ -21,8 +21,15 @@ const App: React.FC = () => {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/profile" element={<UserProfilePage />} />
-            <Route path="/admin" element={<AdminDashboardPage />} />
-            <Route path="*" element={<NotFoundPage />} />
+            <Route
+              path="/admin"
+              element={
+                <AdminRoute>
+                  <AdminDashboardPage />
+                </AdminRoute>
+              }
+            />
+            <Route path="/notfound" element={<NotFoundPage />} />
           </Routes>
         </div>
         <Footer />
