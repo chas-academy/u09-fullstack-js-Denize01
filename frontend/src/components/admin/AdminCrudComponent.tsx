@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface User {
   _id: string;
@@ -18,6 +19,7 @@ const AdminCrudComponent: React.FC = () => {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [editingUserId, setEditingUserId] = useState<string | null>(null);
   const [newUsername, setNewUsername] = useState<string>("");
+  const navigate = useNavigate();
 
   // Fetch all users (Read)
   useEffect(() => {
@@ -110,12 +112,38 @@ const AdminCrudComponent: React.FC = () => {
     setNewUsername(user.username);
   };
 
+  // Logga ut-funktion
+  const handleLogout = async () => {
+    try {
+      await fetch("http://localhost:3000/api/logout", {
+        method: "GET",
+        credentials: "include",
+      });
+    } catch (error) {
+      console.error("Error during logout", error);
+    }
+
+    // Rensa inloggningsdata
+    localStorage.removeItem("username");
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("roles");
+
+    // Navigera till login
+    navigate("/login");
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-neutral-900 via-purple-500 to-indigo-900">
       {/* Admin Dashboard Header */}
-      <div className="text-center bg-opacity-20 bg-white p-4 rounded-lg shadow-md mb-8 mt-16">
+      <div className="text-center bg-opacity-20 bg-white p-4 rounded-lg shadow-md mb-8 mt-16 flex justify-between items-center">
         <h1 className="text-3xl font-bold text-white">Admin Dashboard</h1>
       </div>
+      <button
+        onClick={handleLogout}
+        className="bg-purple-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-purple-700 transition duration-300"
+      >
+        Logout
+      </button>
 
       {/* Main content */}
       <div className="bg-white bg-opacity-20 border-4 border-gray-400 backdrop-blur-lg p-6 rounded-xl shadow-xl max-w-6xl mx-auto my-8 w-full">

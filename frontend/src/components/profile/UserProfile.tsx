@@ -58,16 +58,21 @@ const UserProfilePage: React.FC = () => {
   };
   // Ta bort användaren från localStorage
   const handleLogout = async () => {
-    await fetch("http://localhost:3000/api/logout", {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    try {
+      await fetch("http://localhost:3000/api/logout", {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } catch (error) {
+      console.error("Error during logout", error);
+    }
 
     localStorage.removeItem("username");
     localStorage.removeItem("authToken");
+    localStorage.removeItem("roles");
 
     // Navigera användaren tillbaka till Login
     navigate("/login");
@@ -92,6 +97,7 @@ const UserProfilePage: React.FC = () => {
         // Logga ut användaren och rensa localStorage
         localStorage.removeItem("username");
         localStorage.removeItem("authToken");
+        localStorage.removeItem("roles");
 
         // Navigera till startsidan eller login
         navigate("/login");
