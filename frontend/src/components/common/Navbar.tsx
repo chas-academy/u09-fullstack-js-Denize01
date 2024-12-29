@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [roles, setRole] = useState<string | null>(null);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const storedRole = localStorage.getItem("roles");
+    setRole(storedRole); // Uppdatera rollen från localStorage
+  }, []); // Kör endast en gång vid mount
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
@@ -16,8 +21,10 @@ const Navbar: React.FC = () => {
   const handleLogout = () => {
     localStorage.removeItem("username");
     localStorage.removeItem("authToken");
-    localStorage.removeItem("roles"); // Ta bort rollen från localStorage
+    localStorage.removeItem("roles");
     localStorage.removeItem("adminAuthToken");
+
+    setRole(null);
 
     setIsOpen(false); //stänger menyn efter utloggning
     navigate("/login");

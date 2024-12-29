@@ -31,25 +31,19 @@ router.post("/activities", authenticateToken, (req: Request, res: Response) => {
     res.status(500).json({ message: "Failed to add activity" });
   }
 });
-//Ändringar med OH 20/12: byte till adminAuthToken istället för authenticate token. Nu kan bara admin besöka profilen, inte user. Ändra rätt auth till rätt route!
-// GET: Hämta aktiviteter för den inloggade användaren och ett specifikt datum
-router.get(
-  "/activities",
-  /*adminAuthToken,*/ authenticateToken,
-  async (req, res) => {
-    const userId = req.session.userId;
-    if (!userId) {
-      return res.status(401).json({ message: "Not logged in" });
-    }
-
-    try {
-      const activities = await Activity.find({ userId });
-      res.status(200).json(activities); // Returnera alla aktiviteter för användaren
-    } catch (err) {
-      res.status(500).json({ message: "Failed to fetch activities" });
-    }
+router.get("/activities", authenticateToken, async (req, res) => {
+  const userId = req.session.userId;
+  if (!userId) {
+    return res.status(401).json({ message: "Not logged in" });
   }
-);
+
+  try {
+    const activities = await Activity.find({ userId });
+    res.status(200).json(activities); // Returnera alla aktiviteter för användaren
+  } catch (err) {
+    res.status(500).json({ message: "Failed to fetch activities" });
+  }
+});
 
 // DELETE: Radera en aktivitet baserat på ID
 router.delete(
@@ -121,7 +115,6 @@ router.delete(
 // });
 
 // DELETE: Radera en aktivitet baserat på ID
-
 router.delete(
   "/activities/:id",
   authenticateToken,
