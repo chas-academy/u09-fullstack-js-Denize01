@@ -6,6 +6,7 @@ import {
   updateUserController,
   deleteUserController,
   deleteOwnAccountController,
+  logoutUserController,
 } from "../controllers/userController";
 import userModel from "../models/userModel";
 import { Request, Response } from "express";
@@ -19,29 +20,30 @@ declare module "express-session" {
 
 const router = Router();
 
-router.post("/login", async (req: Request, res: Response) => {
-  const { email, password } = req.body;
+// router.post("/login", async (req: Request, res: Response) => {
+//   const { email, password } = req.body;
 
-  try {
-    const user = await userModel.findOne({ email });
-    if (!user) {
-      return res.status(401).json({ message: "Invalid credentials" });
-    }
+//   try {
+//     const user = await userModel.findOne({ email });
+//     if (!user) {
+//       return res.status(401).json({ message: "Invalid credentials" });
+//     }
 
-    // Spara userId i sessionen
-    req.session.userId = user._id;
-    console.log("User logged in, session userId:", req.session.userId);
-    res
-      .status(200)
-      .json({ message: "Login successful", username: user.username });
-  } catch (err) {
-    res.status(500).json({ message: "Login failed" });
-  }
-});
+//     // Spara userId i sessionen
+//     req.session.userId = user._id;
+//     console.log("User logged in, session userId:", req.session.userId);
+//     res
+//       .status(200)
+//       .json({ message: "Login successful", username: user.username });
+//   } catch (err) {
+//     res.status(500).json({ message: "Login failed" });
+//   }
+// });
 
 router.post("/register", createUserController);
 router.get("/users", getUsersController);
-// router.post("/login", loginUserController);
+router.post("/login", loginUserController);
+router.get("/logout", logoutUserController);
 
 router.get("/session-info", (req: Request, res: Response) => {
   res.json({

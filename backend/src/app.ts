@@ -3,9 +3,12 @@ import session from "express-session";
 import userRoutes from "./routes/userRoutes";
 import activityRoutes from "./routes/activityRoutes";
 import connectDB from "./config/db";
-import cors from "cors"; // Importera CORS
+import cors from "cors";
+import cookieParser from "cookie-parser";
 
 const app: Express = express();
+
+app.use(cookieParser());
 
 // Använd CORS som middleware
 app.use(

@@ -56,9 +56,16 @@ const UserProfilePage: React.FC = () => {
       console.error("Error fetching activities", err);
     }
   };
+  // Ta bort användaren från localStorage
+  const handleLogout = async () => {
+    await fetch("http://localhost:3000/api/logout", {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-  const handleLogout = () => {
-    // Ta bort användaren från localStorage
     localStorage.removeItem("username");
     localStorage.removeItem("authToken");
 

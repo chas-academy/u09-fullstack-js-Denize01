@@ -34,7 +34,7 @@ const LoginForm: React.FC = () => {
       const data = await response.json();
       console.log("Login successful:", data);
 
-      localStorage.setItem("username", data.username);
+      localStorage.setItem("username", data.user.username);
 
       // Om inloggningen lyckas, visa ett framgångsmeddelande
       setSuccess(true);
